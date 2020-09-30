@@ -1,6 +1,8 @@
 import 'package:FurniCommerce/library/login_inputs.dart';
 import 'package:flutter/material.dart';
 
+import 'login_services.dart';
+
 class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,10 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginView extends State<LoginView> {
+  LoginServices services = LoginServices();
+  TextEditingController login = TextEditingController();
+  TextEditingController senha = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,14 +40,23 @@ class _LoginView extends State<LoginView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-                LoginInput(text: "Login"),
-                LoginInput(text: "Senha"),
-                RaisedButton(
-                  onPressed: null,
+            LoginInput(text: "Email", value: login),
+            Padding(padding: EdgeInsets.only(top: 20)),
+            LoginInput(text: "Senha", value: senha),
+            Padding(padding: EdgeInsets.only(top: 40)),
+            Container(
+                width: MediaQuery.of(context).size.width * 0.75,
+                height: 50,
+                child: RaisedButton(
+                  onPressed: () => {services.Login(login.text, senha.text)},
+                  elevation: 3.5,
+                  color: Colors.green,
                   child: Container(
                     child: Text("Entrar"),
                   ),
-                )
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0)),
+                ))
           ],
         ));
   }
