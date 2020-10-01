@@ -22,6 +22,7 @@ class _LoginInput extends State<LoginInput> {
           color: Colors.transparent,
           child: TextField(
             controller: widget.value,
+            textAlign: TextAlign.center,
             decoration: new InputDecoration(
               border: new OutlineInputBorder(
                 borderRadius: const BorderRadius.all(
@@ -30,7 +31,7 @@ class _LoginInput extends State<LoginInput> {
               ),
               filled: true,
               fillColor: Colors.white,
-              hintStyle: new TextStyle(color: Colors.grey[800]),
+              hintStyle: new TextStyle(color: Color.fromRGBO(0, 0, 0, .3)),
               hintText: widget.text,
             )      
           ),
