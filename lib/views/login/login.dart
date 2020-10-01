@@ -28,21 +28,29 @@ class _LoginView extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(
+    return Container(decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/bg.jpg"),
             colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.5), BlendMode.srcOver),
+                Colors.black.withOpacity(0.4), BlendMode.srcOver),
             fit: BoxFit.fill,
           ),
         ),
-        child: Column(
+        child: SingleChildScrollView(
+
+          child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            LoginInput(text: "Email", value: login),
+            Padding(padding: EdgeInsets.only(top: 40)),
+            Container(
+              color: Colors.black.withOpacity(0.1),
+              width: MediaQuery.of(context).size.width * 0.5,
+              child: Image.asset('assets/logo.png'),
+            ),
+            Padding(padding: EdgeInsets.only(top: 40)),
+            LoginInput(text: "Email", value: login,password: false,),
             Padding(padding: EdgeInsets.only(top: 20)),
-            LoginInput(text: "Senha", value: senha),
+            LoginInput(text: "Senha", value: senha,password: true,),
             Padding(padding: EdgeInsets.only(top: 40)),
             Container(
                 width: MediaQuery.of(context).size.width * 0.75,
@@ -56,8 +64,10 @@ class _LoginView extends State<LoginView> {
                   ),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
-                ))
+                )),
+            
           ],
+        ),
         ));
   }
 }
