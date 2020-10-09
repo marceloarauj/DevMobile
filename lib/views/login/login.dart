@@ -1,4 +1,5 @@
 import 'package:FurniCommerce/library/login_inputs.dart';
+import 'package:FurniCommerce/views/lista/lista.dart';
 import 'package:flutter/material.dart';
 
 import 'login_services.dart';
@@ -69,7 +70,13 @@ class _LoginView extends State<LoginView> {
                     width: MediaQuery.of(context).size.width * 0.75,
                     height: 50,
                     child: RaisedButton(
-                      onPressed: () => {services.Login(login.text, senha.text)},
+                      onPressed: () => {
+                        services.Login(login.text, senha.text),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Lista()),
+                        )
+                      },
                       elevation: 3.5,
                       color: Colors.green,
                       child: Container(
@@ -81,9 +88,9 @@ class _LoginView extends State<LoginView> {
               ],
             ),
           )),
-      floatingActionButton: FloatingActionButton( 
-        child:Icon(getIconLogin()),
-        onPressed: ()=> setLoginRegistrarButton()),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(getIconLogin()),
+          onPressed: () => setLoginRegistrarButton()),
     );
   }
 
@@ -138,8 +145,9 @@ class _LoginView extends State<LoginView> {
       widget.ehLogin = !widget.ehLogin;
     });
   }
-  IconData getIconLogin(){
-    if(widget.ehLogin){
+
+  IconData getIconLogin() {
+    if (widget.ehLogin) {
       return Icons.person_add;
     }
     return Icons.portrait;
