@@ -74,7 +74,7 @@ class _LoginView extends State<LoginView> {
                         services.Login(login.text, senha.text),
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Lista()),
+                          MaterialPageRoute(builder: (context) => Lista(nome:"ERT")),
                         )
                       },
                       elevation: 3.5,
