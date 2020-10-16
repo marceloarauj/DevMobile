@@ -1,3 +1,4 @@
+import 'package:FurniCommerce/views/lista/vendas.dart';
 import 'package:flutter/material.dart';
 
 class Lista extends StatelessWidget {
@@ -24,6 +25,8 @@ class ListaView extends StatefulWidget {
 }
 
 class _ListaView extends State<ListaView> {
+  ItensLista itens = ItensLista();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,12 +38,16 @@ class _ListaView extends State<ListaView> {
           children: <Widget>[
             Container(
               child: ListTile(
-                leading: Icon(Icons.add,color: Colors.white,),
-                title: Text('Vendas',style: TextStyle(color: Colors.white),),
+                leading: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  'Vendas',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              decoration: BoxDecoration(
-                color: Colors.brown
-              ),
+              decoration: BoxDecoration(color: Colors.brown),
             ),
             ListTile(
               leading: Icon(Icons.person),
@@ -60,20 +67,9 @@ class _ListaView extends State<ListaView> {
       body: Container(
         child: SingleChildScrollView(
           child: Column(
-            children: <Widget>[ElementoLista()],
+            children: itens.Vendas()
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ElementoLista extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      child: Container(
-        child: Text("ABCDEF123"),
       ),
     );
   }

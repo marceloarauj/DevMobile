@@ -18,7 +18,7 @@ class Login extends StatelessWidget {
 }
 
 class LoginView extends StatefulWidget {
-  bool ehLogin = false;
+  bool ehLogin = true;
 
   TextEditingController cpf = TextEditingController();
   TextEditingController endereco = TextEditingController();
