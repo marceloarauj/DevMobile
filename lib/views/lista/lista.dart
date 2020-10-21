@@ -1,4 +1,5 @@
 import 'package:FurniCommerce/views/lista/vendas.dart';
+import 'package:FurniCommerce/views/venda/venda.dart';
 import 'package:flutter/material.dart';
 
 class Lista extends StatelessWidget {
@@ -60,6 +61,10 @@ class _ListaView extends State<ListaView> {
             ListTile(
               leading: Icon(Icons.exit_to_app),
               title: Text('Sair'),
+              onTap:()=>                         Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Venda()),
+                        ),
             ),
           ],
         ),

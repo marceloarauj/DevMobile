@@ -7,7 +7,7 @@ class ItensLista {
       ElementoLista(Tipo:Tipo.EmAndamento),
       ElementoLista(Tipo:Tipo.Entregue),
       ElementoLista(Tipo:Tipo.Disponivel),
-      ElementoLista(Tipo:Tipo.EmAndamento),
+      ElementoLista(Tipo:Tipo.EmColeta),
       ElementoLista(Tipo:Tipo.EmAndamento),
       ElementoLista(Tipo:Tipo.Disponivel),
       ElementoLista(Tipo:Tipo.EmAndamento),
@@ -80,8 +80,11 @@ class Situacao extends StatelessWidget {
     if(tipo == Tipo.Entregue){
       return Colors.blue;
     }
+    if(tipo == Tipo.EmColeta){
+      return Colors.brown;
+    }
     return Colors.transparent;
   }
 }
 
-enum Tipo { Disponivel, EmAndamento, Entregue }
+enum Tipo { EmColeta,Disponivel, EmAndamento, Entregue }
