@@ -5,6 +5,9 @@ class Venda extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: NovaVenda(),
+      theme: ThemeData(
+        primarySwatch: Colors.brown,
+      ),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -21,26 +24,56 @@ class _NovaVenda extends State<NovaVenda> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Cadastro de venda"),),
       body: Column(
         children: <Widget>[
+          Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: Container(
+                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.grey,
+                      border: Border.all()),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      items: _moveis(),
+                      value: movel,
+                      icon: Icon(Icons.widgets),
+                      onChanged: (valor) {
+                        setState(() {
+                          movel = valor;
+                        });
+                      },
+                    ),
+                  ))),
           Container(
-            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-            decoration: BoxDecoration(            
-              borderRadius: BorderRadius.circular(10.0),
-              color:Colors.grey,
-              border: Border.all()
+            width: 300,
+            child: TextFormField(
+              maxLength: 6,
+              keyboardType: TextInputType.numberWithOptions(signed: false),
+              decoration: InputDecoration(
+                  labelText: 'Valor do móvel',
+                  prefixIcon: Icon(Icons.attach_money)),
             ),
-            child: DropdownButtonHideUnderline(child: DropdownButton(
-            
-            items: _moveis(),
-            value: movel,
-            icon: Icon(Icons.widgets),
-            onChanged: (valor) {
-              setState(() {
-                movel = valor;
-              });
-            },
-          ),)
+          ),
+          Container(
+            width: 300,
+            decoration: BoxDecoration(color: Color.fromRGBO(200, 200, 200, 0)),
+            child: TextFormField(
+              keyboardType: TextInputType.numberWithOptions(signed: false),
+              decoration: InputDecoration(
+                labelText: 'Observação',
+              ),
+            ),
+          ),
+          Container(
+            child: RaisedButton(
+              child: Text('Cadastrar Venda'),
+              onPressed: () => {},
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
+            ),
           )
         ],
       ),
@@ -78,7 +111,7 @@ class _NovaVenda extends State<NovaVenda> {
         value: 6,
       ),
       DropdownMenuItem(
-        child: Text("estante"),
+        child: Text("Estante"),
         value: 7,
       ),
     ];

@@ -37,6 +37,10 @@ class _ListaView extends State<ListaView> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.border_all),
+              title: Text('Inicio'),
+            ),
             Container(
               child: ListTile(
                 leading: Icon(
