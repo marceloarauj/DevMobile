@@ -48,7 +48,7 @@ class _ListaView extends State<ListaView> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  'Vendas',
+                  'Venda',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
