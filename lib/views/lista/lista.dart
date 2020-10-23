@@ -47,6 +47,10 @@ class _ListaView extends State<ListaView> {
                   Icons.add,
                   color: Colors.white,
                 ),
+                onTap: ()=> Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Venda()),
+                        ),
                 title: Text(
                   'Venda',
                   style: TextStyle(color: Colors.white),
@@ -59,16 +63,13 @@ class _ListaView extends State<ListaView> {
               title: Text('Perfil'),
             ),
             ListTile(
-              leading: Icon(Icons.build),
-              title: Text('Configurações'),
+              leading: Icon(Icons.data_usage),
+              title: Text('Relatórios'),
             ),
             ListTile(
               leading: Icon(Icons.exit_to_app),
               title: Text('Sair'),
-              onTap:()=>                         Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Venda()),
-                        ),
+              onTap:()=>  null
             ),
           ],
         ),
