@@ -1,11 +1,21 @@
+import 'package:FurniCommerce/library/camera_controller.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 class VendaServices{
 
-  Widget abrirCamera(bool openCamera){
+  VendaServices(){
 
+  }
+
+  Widget abrirCamera (bool openCamera)  {
+    
     if(openCamera){
-      return Text("AAAAA");
+      return Container(
+        width: 300,
+        height: 300,
+        child:CameraPreview(CameraContr.cam) ,
+      );
     }
 
     return Container();

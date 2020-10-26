@@ -99,7 +99,7 @@ class _NovaVenda extends State<NovaVenda> {
                     ),
                   ),
                 ),
-                services.abrirCamera(this.podeAbrirCamera),
+                services.abrirCamera(podeAbrirCamera),
                 Padding(
                     padding: EdgeInsets.only(top: 40),
                     child: Container(
