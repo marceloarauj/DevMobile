@@ -67,23 +67,26 @@ class Situacao extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
         color: cor()
       ),
+      child: Center(child:texto()),
     );
   }
 
   Color cor(){
-    if(tipo == Tipo.Disponivel){
-      return Colors.green;
-    }
-    if(tipo == Tipo.EmAndamento){
-      return Colors.yellow;
-    }
-    if(tipo == Tipo.Entregue){
-      return Colors.blue;
-    }
-    if(tipo == Tipo.EmColeta){
-      return Colors.brown;
-    }
+    if(tipo == Tipo.Disponivel){return Colors.green;}
+    if(tipo == Tipo.EmAndamento){return Colors.yellow;}
+    if(tipo == Tipo.Entregue){return Colors.blue;}
+    if(tipo == Tipo.EmColeta){return Colors.brown;}
+
     return Colors.transparent;
+  }
+
+    Text texto(){
+    if(tipo == Tipo.Disponivel){return Text("D",style: TextStyle(color: Colors.white));}
+    if(tipo == Tipo.EmAndamento){return Text("A",style: TextStyle(color: Colors.black));}
+    if(tipo == Tipo.Entregue){return Text("E",style: TextStyle(color: Colors.white));}
+    if(tipo == Tipo.EmColeta){return Text("C",style: TextStyle(color: Colors.white));
+    }
+    return Text("");
   }
 }
 

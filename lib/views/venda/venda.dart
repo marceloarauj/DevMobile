@@ -65,6 +65,7 @@ class _NovaVenda extends State<NovaVenda> {
                           TextInputType.numberWithOptions(signed: false),
                       decoration: InputDecoration(
                           labelText: 'Valor do móvel',
+                          counterText: "",
                           prefixIcon: Icon(Icons.attach_money)),
                     ),
                   ),
