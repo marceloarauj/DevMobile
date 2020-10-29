@@ -37,9 +37,22 @@ class _ListaView extends State<ListaView> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            ListTile(
-              leading: Icon(Icons.border_all),
-              title: Text('Inicio'),
+            Container(
+              child: ListTile(
+                leading: Icon(
+                  Icons.border_all,
+                  color: Colors.white,
+                ),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Venda()),
+                ),
+                title: Text(
+                  'Inicio',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              decoration: BoxDecoration(color: Colors.brown),
             ),
             Container(
               child: ListTile(
@@ -47,10 +60,10 @@ class _ListaView extends State<ListaView> {
                   Icons.add,
                   color: Colors.white,
                 ),
-                onTap: ()=> Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Venda()),
-                        ),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Venda()),
+                ),
                 title: Text(
                   'Venda',
                   style: TextStyle(color: Colors.white),
@@ -58,27 +71,63 @@ class _ListaView extends State<ListaView> {
               ),
               decoration: BoxDecoration(color: Colors.brown),
             ),
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Perfil'),
+            Container(
+              child: ListTile(
+                leading: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Venda()),
+                ),
+                title: Text(
+                  'Perfil',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              decoration: BoxDecoration(color: Colors.brown),
             ),
-            ListTile(
-              leading: Icon(Icons.data_usage),
-              title: Text('Relatórios'),
+            Container(
+              child: ListTile(
+                leading: Icon(
+                  Icons.data_usage,
+                  color: Colors.white,
+                ),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Venda()),
+                ),
+                title: Text(
+                  'Relatórios',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              decoration: BoxDecoration(color: Colors.brown),
             ),
-            ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text('Sair'),
-              onTap:()=>  null
-            ),
+            Container(
+              child: ListTile(
+                leading: Icon(
+                  Icons.exit_to_app,
+                  color: Colors.white,
+                ),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Venda()),
+                ),
+                title: Text(
+                  'Sair',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              decoration: BoxDecoration(color: Colors.brown),
+            )
           ],
         ),
       ),
       body: Container(
         child: SingleChildScrollView(
-          child: Column(
-            children: itens.Vendas()
-          ),
+          child: Column(children: itens.Vendas()),
         ),
       ),
     );
