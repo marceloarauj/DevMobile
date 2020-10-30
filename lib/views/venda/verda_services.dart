@@ -26,8 +26,6 @@ class VendaServices {
           ),
           RaisedButton(onPressed: () async => {
             path = join(
-              // Store the picture in the temp directory.
-              // Find the temp directory using the `path_provider` plugin.
               (await getTemporaryDirectory()).path,
               '${DateTime.now()}.png',
             ),

@@ -10,7 +10,7 @@ class Login extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.brown,
+        primarySwatch: Colors.blue,
       ),
       home: LoginView(),
     );
@@ -41,9 +41,9 @@ class _LoginView extends State<LoginView> {
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/bg.jpg"),
+              image: AssetImage("assets/bg2.jpg"),
               colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.4), BlendMode.srcOver),
+                  Colors.black.withOpacity(0.1), BlendMode.srcOver),
               fit: BoxFit.fill,
             ),
           ),
@@ -71,11 +71,7 @@ class _LoginView extends State<LoginView> {
                     height: 50,
                     child: RaisedButton(
                       onPressed: () => {
-                        services.Login(login.text, senha.text),
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Lista(nome:"ERT")),
-                        )
+                          EfetuarLoginRegistro()
                       },
                       elevation: 3.5,
                       color: Colors.green,
@@ -94,10 +90,25 @@ class _LoginView extends State<LoginView> {
     );
   }
 
+  void EfetuarLoginRegistro() async{
+
+      if(this.widget.ehLogin){
+        bool loginSucesso = false;
+        loginSucesso = await services.LoginRequest(login.text, senha.text);
+        
+        if(loginSucesso){
+          Navigator.push(
+              context,
+          MaterialPageRoute(builder: (context) => Lista(nome:"ERT")));
+        }
+      }
+      
+
+  }
   Widget ehLogin() {
     if (widget.ehLogin) {
       return Container(
-        color: Colors.black.withOpacity(0.1),
+        color: Colors.black.withOpacity(0.0),
         width: MediaQuery.of(context).size.width * 0.5,
         child: Image.asset('assets/logo.png'),
       );
