@@ -1,7 +1,7 @@
 import 'package:FurniCommerce/views/lista/vendas.dart';
 import 'package:FurniCommerce/views/venda/venda.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:io';
 class Lista extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -111,10 +111,7 @@ class _ListaView extends State<ListaView> {
                   Icons.exit_to_app,
                   color: Colors.white,
                 ),
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Venda()),
-                ),
+                onTap: () => exit(0),
                 title: Text(
                   'Sair',
                   style: TextStyle(color: Colors.white),

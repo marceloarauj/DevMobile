@@ -96,7 +96,7 @@ class _LoginView extends State<LoginView> {
         bool loginSucesso = false;
         loginSucesso = await services.LoginRequest(login.text, senha.text);
         
-        if(loginSucesso){
+        if(!loginSucesso){
           Navigator.push(
               context,
           MaterialPageRoute(builder: (context) => Lista(nome:"ERT")));

@@ -27,7 +27,12 @@ class _NovaVenda extends State<NovaVenda> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: ()async{
+        print("AAAAAAAAAAAAAAAAAAAAAA");
+        Navigator.of(context).pop(true);
+      },
+      child: Scaffold(
         appBar: AppBar(
           title: Text("Cadastro de venda"),
         ),
@@ -114,7 +119,8 @@ class _NovaVenda extends State<NovaVenda> {
               ],
             ),
           ),
-        ));
+        )),
+    );
   }
 
   List<DropdownMenuItem> _moveis() {
