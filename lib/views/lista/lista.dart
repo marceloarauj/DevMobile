@@ -1,4 +1,5 @@
 import 'package:FurniCommerce/views/lista/vendas.dart';
+import 'package:FurniCommerce/views/perfil/perfil.dart';
 import 'package:FurniCommerce/views/venda/venda.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -79,7 +80,7 @@ class _ListaView extends State<ListaView> {
                 ),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Venda()),
+                  MaterialPageRoute(builder: (context) => Perfil(nome: 'Teste',avaliacao: '4.5',)),
                 ),
                 title: Text(
                   'Perfil',
