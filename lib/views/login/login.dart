@@ -101,9 +101,19 @@ class _LoginView extends State<LoginView> {
               context,
           MaterialPageRoute(builder: (context) => Lista(nome:"ERT")));
         }
+
+      }else{
+        bool registro = false;
+
+        registro = await services.RegisterRequest(widget.nome.text, login.text, senha.text, widget.cpf.text, widget.endereco.text);
+
+        if(!registro){
+
+        }else{
+
+        }
       }
       
-
   }
   Widget ehLogin() {
     if (widget.ehLogin) {
