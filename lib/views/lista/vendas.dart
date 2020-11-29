@@ -54,7 +54,28 @@ class ElementoLista extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
-        onTap: (){},
+        onTap: (){
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return StatefulBuilder(builder: (context, setState) {
+                  return AlertDialog(
+                    content: Container(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: MediaQuery.of(context).size.width * 0.8,
+                      child: Center(child: Column(children: [
+                        Text("Valor"),
+                        Text("Vendedor"),
+                        Text("Movel"),
+                        Text("Imagem"),
+                        RaisedButton(child:Text("Comprar"))
+                      ],)),
+                    ),
+                  );
+                });
+              });
+        },
         child: Container(
           height: 75,
           width: MediaQuery.of(context).size.width,
