@@ -1,8 +1,11 @@
+import 'dart:core';
 import 'package:http/http.dart';
+import 'loginDTO.dart';
 
 class LoginServices {
 
-  Future<bool> LoginRequest(String login, String senha) async{
+  Future <List<LoginDTO>> LoginRequest(String login, String senha) async{
+    
     String url = "https://furnicommerce.herokuapp.com/login";
 
     Map<String, String> headers = {"Content-type": "application/json"};
@@ -11,15 +14,25 @@ class LoginServices {
 
     Response response = await post(url,headers: headers,body: json);
 
-    int status = response.statusCode;
-    print(status);
-    if(status != 200){
-      return false;
-    }
-
-    return true;
+    List<LoginDTO> loginResponse = LoginDTO().parseLogin(response.body);
+    
+    return loginResponse;
   }
 
+  Future <List<LoginDTO>> RegisterRequest(String email, String senha,String endereco,String cpf,String nome) async{
+    
+    String url = "https://furnicommerce.herokuapp.com/register";
+
+    Map<String, String> headers = {"Content-type": "application/json"};
+
+    String json = '{"email": "${email}", "senha": "${senha}", "endereco":"${endereco}","nome":"${nome}","cpf":"${cpf}" }';
+
+    Response response = await post(url,headers: headers,body: json);
+
+    List<LoginDTO> loginResponse = LoginDTO().parseLogin(response.body);
+    
+    return loginResponse;
+  }
 }
 
 class PostLogin {}

@@ -1,31 +1,54 @@
+import 'package:FurniCommerce/views/lista/vendaDTO.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ItensLista {
-  List<Widget> Vendas() {
-    return <Widget>[
-      ElementoLista(Tipo:Tipo.EmAndamento),
-      ElementoLista(Tipo:Tipo.Entregue),
-      ElementoLista(Tipo:Tipo.Disponivel),
-      ElementoLista(Tipo:Tipo.EmColeta),
-      ElementoLista(Tipo:Tipo.EmAndamento),
-      ElementoLista(Tipo:Tipo.Disponivel),
-      ElementoLista(Tipo:Tipo.EmAndamento),
-      ElementoLista(Tipo:Tipo.Disponivel),
-      ElementoLista(Tipo:Tipo.EmAndamento),
-      ElementoLista(Tipo:Tipo.EmAndamento),
-      ElementoLista(Tipo:Tipo.Entregue),
-      ElementoLista(Tipo:Tipo.EmAndamento),
-      ElementoLista(Tipo:Tipo.EmAndamento)
-    ];
+  List<Widget> Vendas(List<VendaDTO> vendas) {
+    List<ElementoLista> elementos = List<ElementoLista>();
+
+    for (var venda in vendas) {
+
+      elementos.add(ElementoLista(Tipo: DeParaTipo(venda.status_venda),
+                                  movel: DeParaMovel(venda.movel),
+                                  data:FormatedData(venda.data_venda)));
+    }
+    return elementos;
+  }
+
+  Tipo DeParaTipo(int tipo) {
+    if (tipo == 1) {return Tipo.Disponivel;}
+    if (tipo == 2) {return Tipo.Comprado;}
+    if (tipo == 3) {return Tipo.Entregue;}
+    
+    return null;
+  }
+  String DeParaMovel(int movel){
+    if(movel == 1){return 'Cama';}
+    if(movel == 2){return 'Sofá';}
+    if(movel == 3){return 'Poltrona';}
+    if(movel == 4){return 'Armário';}
+    if(movel == 5){return 'Mesa';}
+    if(movel == 6){return 'Cadeira';}
+    if(movel == 7){return 'Estante';}
+
+    return null;
+  }
+  String FormatedData(String data){
+    String ano = data.substring(0,4);
+    String mes = data.substring(5,7);
+    String dia = data.substring(8,10);
+
+    return '${dia}/${mes}/${ano}';
   }
 }
 
 class ElementoLista extends StatelessWidget {
-  
   final Tipo;
+  final String data;
+  final String movel;
 
-  const ElementoLista({Key key, this.Tipo}) : super(key: key);
+  const ElementoLista({Key key, this.Tipo, this.data, this.movel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,17 +60,20 @@ class ElementoLista extends StatelessWidget {
               color: Color.fromRGBO(240, 240, 240, 0),
               border: Border.all(width: 0.2, color: Colors.grey)),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 10,left: 10),
-                child: Text("ABCDEF123"),
+                padding: EdgeInsets.only(top: 10, left: 10),
+                child: Text("${movel}"),
               ),
-              Padding(padding: EdgeInsets.only(top: 10,left: 60),
-                child: Text("Data"),
+              Padding(
+                padding: EdgeInsets.only(top: 10, left: 0),
+                child: Text("${data}"),
               ),
-              Padding(padding: EdgeInsets.only(top: 10,left: 120),
-                child: Situacao(tipo:Tipo),
-              ),              
+              Padding(
+                padding: EdgeInsets.only(top: 10, right: 10),
+                child: Situacao(tipo: Tipo),
+              ),
             ],
           )),
     );
@@ -61,33 +87,40 @@ class Situacao extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 70,
-      height:30,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: cor()
-      ),
-      child: Center(child:texto()),
+      width: 85,
+      height: 30,
+      decoration:
+          BoxDecoration(borderRadius: BorderRadius.circular(30), color: cor()),
+      child: Center(child: texto()),
     );
   }
 
-  Color cor(){
-    if(tipo == Tipo.Disponivel){return Colors.green;}
-    if(tipo == Tipo.EmAndamento){return Colors.yellow;}
-    if(tipo == Tipo.Entregue){return Colors.blue;}
-    if(tipo == Tipo.EmColeta){return Colors.brown;}
+  Color cor() {
+    if (tipo == Tipo.Disponivel) {
+      return Colors.green;
+    }
+    if (tipo == Tipo.Comprado) {
+      return Colors.brown;
+    }
+    if (tipo == Tipo.Entregue) {
+      return Colors.blue;
+    }
 
     return Colors.transparent;
   }
 
-    Text texto(){
-    if(tipo == Tipo.Disponivel){return Text("D",style: TextStyle(color: Colors.white));}
-    if(tipo == Tipo.EmAndamento){return Text("A",style: TextStyle(color: Colors.black));}
-    if(tipo == Tipo.Entregue){return Text("E",style: TextStyle(color: Colors.white));}
-    if(tipo == Tipo.EmColeta){return Text("C",style: TextStyle(color: Colors.white));
+  Text texto() {
+    if (tipo == Tipo.Disponivel) {
+      return Text("Disponível", style: TextStyle(color: Colors.white));
+    }
+    if (tipo == Tipo.Comprado) {
+      return Text("Comprado", style: TextStyle(color: Colors.white));
+    }
+    if (tipo == Tipo.Entregue) {
+      return Text("Entregue", style: TextStyle(color: Colors.white));
     }
     return Text("");
   }
 }
 
-enum Tipo { EmColeta,Disponivel, EmAndamento, Entregue }
+enum Tipo { Disponivel, Comprado, Entregue }

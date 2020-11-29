@@ -1,16 +1,50 @@
 # FurniCommerce
 
-A new Flutter project.
+POST https://furnicommerce.herokuapp.com/comprarMovel
+Content-Type: application/json
 
-## Getting Started
+{
+    "uid":8,
+    "venda_id": 11
+}
 
-This project is a starting point for a Flutter application.
+POST https://furnicommerce.herokuapp.com/login
+Content-Type: application/json
 
-A few resources to get you started if this is your first Flutter project:
+{
+    "email":"adm@gmail.com",
+    "senha":"adm"
+}
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+POST https://furnicommerce.herokuapp.com/register
+Content-Type: application/json
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+{
+    "nome":"Administrador",
+    "cpf":"300.300.300-30",
+    "email":"adm@adm.com",
+    "senha":"adm",
+    "endereco":"Av. Teste do sul"
+}
+
+POST https://furnicommerce.herokuapp.com/vendaId
+Content-Type: application/json
+
+{
+    "venda_id": 11
+}
+
+POST https://furnicommerce.herokuapp.com/venda
+Content-Type: application/json
+
+{   
+    "uid":8,
+    "movelId":2,
+    "imagem":"base64"
+}
+POST https://furnicommerce.herokuapp.com/vendaUsuario
+Content-Type: application/json
+
+{
+    "uid":8
+}
