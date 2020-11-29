@@ -53,7 +53,9 @@ class ElementoLista extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Container(
+      child: InkWell(
+        onTap: (){},
+        child: Container(
           height: 75,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
@@ -75,7 +77,8 @@ class ElementoLista extends StatelessWidget {
                 child: Situacao(tipo: Tipo),
               ),
             ],
-          )),
+          ))
+      ),
     );
   }
 }

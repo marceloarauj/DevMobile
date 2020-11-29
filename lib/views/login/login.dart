@@ -57,12 +57,14 @@ class _LoginView extends State<LoginView> {
                 ehLogin(),
                 Padding(padding: EdgeInsets.only(top: 40)),
                 LoginInput(
+                  length: 50,
                   text: "Email",
                   value: login,
                   password: false,
                 ),
                 Padding(padding: EdgeInsets.only(top: 20)),
                 LoginInput(
+                  length: 40,
                   text: "Senha",
                   value: senha,
                   password: true,
@@ -220,18 +222,21 @@ class _LoginView extends State<LoginView> {
         children: <Widget>[
           Padding(padding: EdgeInsets.only(top: 40)),
           LoginInput(
+            length: 50,
             text: "Nome",
             value: widget.nome,
             password: false,
           ),
           Padding(padding: EdgeInsets.only(top: 20)),
           LoginInput(
+            length:11,
             text: "CPF",
             value: widget.cpf,
             password: false,
           ),
           Padding(padding: EdgeInsets.only(top: 20)),
           LoginInput(
+            length: 50,
             text: "Endereço",
             value: widget.endereco,
             password: false,

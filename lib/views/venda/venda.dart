@@ -76,7 +76,7 @@ class _NovaVenda extends State<NovaVenda> {
                       width: 300,
                       child: TextFormField(
                         controller: valor,
-                        maxLength: 6,
+                        maxLength: 8,
                         keyboardType:
                             TextInputType.numberWithOptions(signed: false),
                         decoration: InputDecoration(

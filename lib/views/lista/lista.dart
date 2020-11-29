@@ -46,7 +46,7 @@ class _ListaView extends State<ListaView> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            Container(
+            InkWell(child: Container(
               child: ListTile(
                 leading: Icon(
                   Icons.border_all,
@@ -62,8 +62,8 @@ class _ListaView extends State<ListaView> {
                 ),
               ),
               decoration: BoxDecoration(color: Colors.brown),
-            ),
-            Container(
+            )),
+            InkWell(child:Container(
               child: ListTile(
                 leading: Icon(
                   Icons.add,
@@ -79,8 +79,8 @@ class _ListaView extends State<ListaView> {
                 ),
               ),
               decoration: BoxDecoration(color: Colors.brown),
-            ),
-            Container(
+            )),
+            InkWell(child:Container(
               child: ListTile(
                 leading: Icon(
                   Icons.person,
@@ -96,8 +96,8 @@ class _ListaView extends State<ListaView> {
                 ),
               ),
               decoration: BoxDecoration(color: Colors.brown),
-            ),
-            Container(
+            )),
+            InkWell(child:Container(
               child: ListTile(
                 leading: Icon(
                   Icons.data_usage,
@@ -113,8 +113,8 @@ class _ListaView extends State<ListaView> {
                 ),
               ),
               decoration: BoxDecoration(color: Colors.brown),
-            ),
-            Container(
+            )),
+            InkWell(child:Container(
               child: ListTile(
                 leading: Icon(
                   Icons.exit_to_app,
@@ -127,7 +127,7 @@ class _ListaView extends State<ListaView> {
                 ),
               ),
               decoration: BoxDecoration(color: Colors.brown),
-            )
+            ))
           ],
         ),
       ),
