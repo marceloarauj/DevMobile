@@ -1,34 +1,38 @@
 import 'dart:convert';
-
+import 'dart:core';
 import 'package:http/http.dart';
+import 'loginDTO.dart';
 
 class LoginServices {
 
   Map<String, String> headers = {"Content-type": "application/json"};
 
-  Future<bool> LoginRequest(String login, String senha) async{
+  
+  Future <List<LoginDTO>> LoginRequest(String login, String senha) async{
+    
     String url = "https://furnicommerce.herokuapp.com/login";
 
     String json = '{"email": "${login}", "senha": "${senha}"}';
 
     Response response = await post(url,headers: headers,body: json);
 
-    String jsonResponse = response.body;
-
-    return jsonDecode(jsonResponse);
+    List<LoginDTO> loginResponse = LoginDTO().parseLogin(response.body);
+    
+    return loginResponse;
   }
 
-  Future<Map<String,String>> RegisterRequest(String nome,String email,String senha, String cpf,String endereco) async{
-
+  Future <List<LoginDTO>> RegisterRequest(String email, String senha,String endereco,String cpf,String nome) async{
+    
     String url = "https://furnicommerce.herokuapp.com/register";
 
-    String json = '{"nome":"${nome}","email":"${email}","cpf":"${cpf}","endereco":"${endereco}","senha":"${senha}"}';
+    Map<String, String> headers = {"Content-type": "application/json"};
 
-    Response response = await post(url,headers: headers,body:json);
+    String json = '{"email": "${email}", "senha": "${senha}", "endereco":"${endereco}","nome":"${nome}","cpf":"${cpf}" }';
+
+    Response response = await post(url,headers: headers,body: json);
+
+    List<LoginDTO> loginResponse = LoginDTO().parseLogin(response.body);
     
-    String jsonResponse = response.body;
-
-    return jsonDecode(jsonResponse);
-
+    return loginResponse;
   }
 }

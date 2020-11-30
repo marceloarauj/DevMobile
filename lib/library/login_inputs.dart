@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class LoginInput extends StatefulWidget {
-  LoginInput({Key key, this.text, this.fx, this.value, this.password}) : super(key: key);
+  LoginInput({Key key, this.text, this.fx, this.value, this.password, this.length}) : super(key: key);
   final String text;
   final Function fx;
   bool password = false;
+  final int length;
   TextEditingController value;
 
   @override
@@ -23,6 +24,7 @@ class _LoginInput extends State<LoginInput> {
           child: TextField(
             controller: widget.value,
             textAlign: TextAlign.center,
+            maxLength: widget.length,
             obscureText: this.widget.password,
             decoration: new InputDecoration(
               border: new OutlineInputBorder(
@@ -30,6 +32,7 @@ class _LoginInput extends State<LoginInput> {
                   const Radius.circular(30.0),
                 ),
               ),
+              counterText: "",
               filled: true,
               fillColor: Colors.white,
               hintStyle: new TextStyle(color: Color.fromRGBO(0, 0, 0, .3)),

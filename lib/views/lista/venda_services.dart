@@ -1,0 +1,34 @@
+import 'package:FurniCommerce/views/lista/vendaDTO.dart';
+import 'package:http/http.dart';
+
+class VendaServices{
+
+    Future <List<VendaDTO>> ObterVendas() async{
+    
+      String url = "https://furnicommerce.herokuapp.com/vendas";
+
+      Map<String, String> headers = {"Content-type": "application/json"};
+
+      Response response = await get(url,headers:headers);
+
+      List<VendaDTO> vendasResponse = VendaDTO().parseVenda(response.body);
+      
+      return vendasResponse;
+    }
+
+    Future <List<VendaDTO>> obterVendaPorId(int id) async{
+
+      String url = "https://furnicommerce.herokuapp.com/vendaId";
+
+      Map<String, String> headers = {"Content-type": "application/json"};
+
+      String json = '{"venda_id":"${id}"}';
+
+      Response response = await post(url,headers:headers,body:json);
+
+      List<VendaDTO> vendasResponse = VendaDTO().parseVenda(response.body);
+      
+      return vendasResponse;
+
+    }
+}

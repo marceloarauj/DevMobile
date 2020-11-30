@@ -1,5 +1,6 @@
 import 'package:FurniCommerce/library/login_inputs.dart';
 import 'package:FurniCommerce/views/lista/lista.dart';
+import 'package:FurniCommerce/views/login/loginDTO.dart';
 import 'package:flutter/material.dart';
 
 import 'login_services.dart';
@@ -30,6 +31,7 @@ class LoginView extends StatefulWidget {
 
 class _LoginView extends State<LoginView> {
   LoginServices services = LoginServices();
+
   TextEditingController login = TextEditingController();
   TextEditingController senha = TextEditingController();
 
@@ -55,12 +57,14 @@ class _LoginView extends State<LoginView> {
                 ehLogin(),
                 Padding(padding: EdgeInsets.only(top: 40)),
                 LoginInput(
+                  length: 50,
                   text: "Email",
                   value: login,
                   password: false,
                 ),
                 Padding(padding: EdgeInsets.only(top: 20)),
                 LoginInput(
+                  length: 40,
                   text: "Senha",
                   value: senha,
                   password: true,
@@ -70,9 +74,7 @@ class _LoginView extends State<LoginView> {
                     width: MediaQuery.of(context).size.width * 0.75,
                     height: 50,
                     child: RaisedButton(
-                      onPressed: () => {
-                          EfetuarLoginRegistro()
-                      },
+                      onPressed: () => {EfetuarLoginRegistro(context)},
                       elevation: 3.5,
                       color: Colors.green,
                       child: Container(
@@ -90,31 +92,123 @@ class _LoginView extends State<LoginView> {
     );
   }
 
-  void EfetuarLoginRegistro() async{
-
-      if(this.widget.ehLogin){
-        bool loginSucesso = false;
-        loginSucesso = await services.LoginRequest(login.text, senha.text);
-        
-        if(!loginSucesso){
-          Navigator.push(
-              context,
-          MaterialPageRoute(builder: (context) => Lista(nome:"ERT")));
-        }
-
-      }else{
-        bool registro = false;
-
-        registro = await services.RegisterRequest(widget.nome.text, login.text, senha.text, widget.cpf.text, widget.endereco.text);
-
-        if(!registro){
-
-        }else{
-
-        }
-      }
-      
+  void EfetuarLoginRegistro(BuildContext context) async {
+    if (this.widget.ehLogin) {
+      await loginDialog(context);
+    } else {
+      await registerDialog(context);
+    }
   }
+
+  void registerDialog(BuildContext context) async {
+    BuildContext dialogContx = null;
+
+    if (widget.nome.text == '' ||
+        widget.endereco.text == '' ||
+        senha.text == '' ||
+        widget.cpf.text == '' ||
+        login.text == '') {
+
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(builder: (context, setState) {
+              return AlertDialog(
+                content: Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 30,
+                  child: Center(child: Text('Existem campos não preenchidos')),
+                ),
+              );
+            });
+          });
+      return null;
+    }
+
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          dialogContx = context;
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              content: Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: 30,
+                child: Center(child: Text('Registrando usuário...')),
+              ),
+            );
+          });
+        });
+    List<LoginDTO> registro = await services.RegisterRequest(login.text,
+        senha.text, widget.endereco.text, widget.cpf.text, widget.nome.text);
+
+    Navigator.pop(dialogContx);
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              content: Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: 30,
+                child: Center(child: Text(registro[0].mensagem)),
+              ),
+            );
+          });
+        });
+  }
+
+  void loginDialog(BuildContext context) async {
+    List<LoginDTO> loginSucesso = null;
+    String mensagem = 'Efetuando login...';
+    BuildContext dialogContx = null;
+
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setState) {
+            dialogContx = context;
+            return AlertDialog(
+              content: Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: 30,
+                child: Center(child: Text('${mensagem}')),
+              ),
+            );
+          });
+        });
+    loginSucesso = await services.LoginRequest(login.text, senha.text);
+    Navigator.pop(dialogContx);
+
+    if (loginSucesso[0].usuario_id != null) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Lista(
+                  nome: loginSucesso[0].nome,
+                  uid: loginSucesso[0].usuario_id)));
+    } else {
+      mensagem = loginSucesso[0].error;
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(builder: (context, setState) {
+              dialogContx = context;
+              return AlertDialog(
+                content: Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 30,
+                  child: Center(child: Text('${mensagem}')),
+                ),
+              );
+            });
+          });
+    }
+  }
+
   Widget ehLogin() {
     if (widget.ehLogin) {
       return Container(
@@ -128,20 +222,23 @@ class _LoginView extends State<LoginView> {
         children: <Widget>[
           Padding(padding: EdgeInsets.only(top: 40)),
           LoginInput(
+            length: 50,
             text: "Nome",
             value: widget.nome,
             password: false,
           ),
           Padding(padding: EdgeInsets.only(top: 20)),
           LoginInput(
+            length:11,
             text: "CPF",
-            value: widget.endereco,
+            value: widget.cpf,
             password: false,
           ),
           Padding(padding: EdgeInsets.only(top: 20)),
           LoginInput(
+            length: 50,
             text: "Endereço",
-            value: widget.cpf,
+            value: widget.endereco,
             password: false,
           ),
         ],

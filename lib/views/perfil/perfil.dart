@@ -62,7 +62,7 @@ class _PerfilPage extends State<PerfilPage> {
                         height: 540,
                         child: SingleChildScrollView(
                           child: Column(
-                            children: itens.Vendas(),
+                            children: itens.Vendas(null),
                           ),
                         ),
                       ))
