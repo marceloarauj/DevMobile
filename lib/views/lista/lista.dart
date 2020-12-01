@@ -30,12 +30,13 @@ class ListaView extends StatefulWidget {
   int uid;
 
   @override
-  _ListaView createState() => _ListaView();
+  ListaViewUser createState() => ListaViewUser();
 }
 
-class _ListaView extends State<ListaView> {
+class ListaViewUser extends State<ListaView> {
   ItensLista itens = ItensLista();
   Future<List<VendaDTO>> vendas = VendaServices().ObterVendas();
+  
   
   @override
   Widget build(BuildContext context) {
@@ -137,7 +138,7 @@ class _ListaView extends State<ListaView> {
             if(!snapshot.hasData){
               return Container(height:500,child:Center(child: CircularProgressIndicator()));
             }else{
-              return Column(children: itens.Vendas(snapshot.data));
+              return Column(children: itens.Vendas(snapshot.data,widget.uid,this));
             }
           })),
         ),

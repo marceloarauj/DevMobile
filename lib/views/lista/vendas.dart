@@ -1,14 +1,22 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:FurniCommerce/views/lista/vendaDTO.dart';
 import 'package:FurniCommerce/views/lista/venda_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'lista.dart';
+
 class ItensLista {
-  List<Widget> Vendas(List<VendaDTO> vendas) {
+  List<Widget> Vendas(List<VendaDTO> vendas, int uid,ListaViewUser lista) {
     List<ElementoLista> elementos = List<ElementoLista>();
 
     for (var venda in vendas) {
       elementos.add(ElementoLista(
+          lista:lista,
+          uid: uid,
           id: venda.venda_id,
           Tipo: DeParaTipo(venda.status_venda),
           movel: DeParaMovel(venda.movel),
@@ -67,15 +75,17 @@ class ItensLista {
 }
 
 class ElementoLista extends StatelessWidget {
+  
+  ElementoLista({Key key, this.Tipo, this.data, this.movel, this.id, this.uid,this.lista})
+      : super(key: key);
+  
   VendaServices services = VendaServices();
-
   final Tipo;
   final String data;
   final String movel;
-  final id;
-
-  ElementoLista({Key key, this.Tipo, this.data, this.movel, this.id})
-      : super(key: key);
+  final int id;
+  final int uid;
+  final ListaViewUser lista;
 
   String DeParaMovel(int movel) {
     if (movel == 1) {
@@ -103,13 +113,73 @@ class ElementoLista extends StatelessWidget {
     return null;
   }
 
+  Image fromBase64Image(String imageB64) {
+    Uint8List bytes = Base64Decoder().convert(imageB64);
+    return Image.memory(bytes);
+  }
+
+  Widget podeComprar(int status, int idVenda, int uid, BuildContext context) {
+    BuildContext dialogContx = null;
+    List<VendaDTO> venda;
+
+    if (status == 1) {
+      return RaisedButton(
+          onPressed: () async => {
+                showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      dialogContx = context;
+                      return StatefulBuilder(builder: (context, setState) {
+                        return AlertDialog(
+                          content: Container(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            height: 30,
+                            child: Center(child: Text('Comprando móvel...')),
+                          ),
+                        );
+                      });
+                    }),
+                venda = await services.comprarMovel(idVenda, uid),
+                Navigator.pop(dialogContx),
+                showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      dialogContx = context;
+                      return StatefulBuilder(builder: (context, setState) {
+                        return AlertDialog(
+                          content: Container(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            height: 30,
+                            child: Center(child: Text('${venda[0].message}')),
+                          ),
+                        );
+                      });
+                    }),
+                sleep(Duration(seconds:2)),
+                lista.setState(()=>{}),
+                                
+              },
+          elevation: 3.5,
+          color: Colors.green,
+          child: Container(
+            child: Text("Comprar"),
+          ),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0)));
+    }
+    return Padding(
+        padding: EdgeInsets.only(top: 10),
+        child: Container(child: Text("Produto não disponível")));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
           onTap: () async {
             List<VendaDTO> venda = await services.obterVendaPorId(id);
-
             showDialog(
                 context: context,
                 barrierDismissible: false,
@@ -122,11 +192,16 @@ class ElementoLista extends StatelessWidget {
                         child: Center(
                             child: Column(
                           children: [
-                            Text("Valor: ${venda[0].valor}"),
+                            Text("Preço R\$: ${venda[0].valor}"),
                             Text("Vendedor: ${venda[0].usuario_vendedor}"),
                             Text("Movel: ${DeParaMovel(venda[0].movel)}"),
-                            Text("Imagem"),
-                            RaisedButton(child: Text("Comprar"))
+                            Container(
+                              width: 300,
+                              height: 200,
+                              child: fromBase64Image(venda[0].imagem),
+                            ),
+                            podeComprar(venda[0].status_venda,
+                                id, uid, context)
                           ],
                         )),
                       ),
