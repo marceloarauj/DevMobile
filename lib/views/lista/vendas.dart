@@ -1,16 +1,24 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:FurniCommerce/views/lista/vendaDTO.dart';
 import 'package:FurniCommerce/views/lista/venda_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'lista.dart';
+
 class ItensLista {
-  List<Widget> Vendas(List<VendaDTO> vendas) {
+  List<Widget> Vendas(List<VendaDTO> vendas, int uid,ListaViewUser lista) {
     List<ElementoLista> elementos = List<ElementoLista>();
 
     for (var venda in vendas) {
       elementos.add(ElementoLista(
+          lista:lista,
+          uid: uid,
           id: venda.venda_id,
-          Tipo: DeParaTipo(venda.status_venda),
+          tipo: DeParaTipo(venda.status_venda),
           movel: DeParaMovel(venda.movel),
           data: FormatedData(venda.data_venda)));
     }
@@ -66,17 +74,23 @@ class ItensLista {
   }
 }
 
-class ElementoLista extends StatelessWidget {
+class ElementoLista extends StatefulWidget {
+  
+  ElementoLista({Key key, this.tipo, this.data, this.movel, this.id, this.uid,this.lista})
+      : super(key: key);
+  
   VendaServices services = VendaServices();
-
-  final Tipo;
+  Tipo tipo;
   final String data;
   final String movel;
-  final id;
+  final int id;
+  final int uid;
+  final ListaViewUser lista;
 
-  ElementoLista({Key key, this.Tipo, this.data, this.movel, this.id})
-      : super(key: key);
-
+  @override
+  _ElementoLista createState()=> _ElementoLista();
+}
+class _ElementoLista extends State<ElementoLista>{
   String DeParaMovel(int movel) {
     if (movel == 1) {
       return 'Cama';
@@ -103,13 +117,72 @@ class ElementoLista extends StatelessWidget {
     return null;
   }
 
+  Image fromBase64Image(String imageB64) {
+    Uint8List bytes = Base64Decoder().convert(imageB64);
+    return Image.memory(bytes);
+  }
+
+  Widget podeComprar(int status, int idVenda, int uid, BuildContext context) {
+    BuildContext dialogContx = null;
+    List<VendaDTO> venda;
+
+    if (status == 1) {
+      return RaisedButton(
+          onPressed: () async => {
+                showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      dialogContx = context;
+                      return StatefulBuilder(builder: (context, setState) {
+                        return AlertDialog(
+                          content: Container(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            height: 30,
+                            child: Center(child: Text('Comprando móvel...')),
+                          ),
+                        );
+                      });
+                    }),
+                venda = await widget.services.comprarMovel(idVenda, uid),
+                Navigator.pop(dialogContx),
+                showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      dialogContx = context;
+                      return StatefulBuilder(builder: (context, setState) {
+                        return AlertDialog(
+                          content: Container(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            height: 30,
+                            child: Center(child: Text('${venda[0].message}')),
+                          ),
+                        );
+                      });
+                    }),
+                widget.tipo = Tipo.Comprado,
+                setState(()=>{})               
+              },
+          elevation: 3.5,
+          color: Colors.green,
+          child: Container(
+            child: Text("Comprar"),
+          ),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0)));
+    }
+    return Padding(
+        padding: EdgeInsets.only(top: 10),
+        child: Container(child: Text("Produto não disponível")));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
           onTap: () async {
-            List<VendaDTO> venda = await services.obterVendaPorId(id);
-
+            List<VendaDTO> venda = await widget.services.obterVendaPorId(widget.id);
             showDialog(
                 context: context,
                 barrierDismissible: false,
@@ -122,11 +195,16 @@ class ElementoLista extends StatelessWidget {
                         child: Center(
                             child: Column(
                           children: [
-                            Text("Valor: ${venda[0].valor}"),
+                            Text("Preço R\$: ${venda[0].valor}"),
                             Text("Vendedor: ${venda[0].usuario_vendedor}"),
                             Text("Movel: ${DeParaMovel(venda[0].movel)}"),
-                            Text("Imagem"),
-                            RaisedButton(child: Text("Comprar"))
+                            Container(
+                              width: 300,
+                              height: 200,
+                              child: fromBase64Image(venda[0].imagem),
+                            ),
+                            podeComprar(venda[0].status_venda,
+                                widget.id, widget.uid, context)
                           ],
                         )),
                       ),
@@ -145,25 +223,30 @@ class ElementoLista extends StatelessWidget {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(top: 10, left: 10),
-                    child: Text("${movel}"),
+                    child: Text("${widget.movel}"),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 10, left: 0),
-                    child: Text("${data}"),
+                    child: Text("${widget.data}"),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 10, right: 10),
-                    child: Situacao(tipo: Tipo),
+                    child: Situacao(tipo: widget.tipo),
                   ),
                 ],
               ))),
     );
   }
-}
 
-class Situacao extends StatelessWidget {
+}
+class Situacao extends StatefulWidget {
   const Situacao({Key key, this.tipo}) : super(key: key);
   final Tipo tipo;
+
+  @override
+  _Situacao createState()=> _Situacao();
+}
+class _Situacao extends State<Situacao>{
 
   @override
   Widget build(BuildContext context) {
@@ -177,13 +260,13 @@ class Situacao extends StatelessWidget {
   }
 
   Color cor() {
-    if (tipo == Tipo.Disponivel) {
+    if (widget.tipo == Tipo.Disponivel) {
       return Colors.green;
     }
-    if (tipo == Tipo.Comprado) {
+    if (widget.tipo == Tipo.Comprado) {
       return Colors.brown;
     }
-    if (tipo == Tipo.Entregue) {
+    if (widget.tipo == Tipo.Entregue) {
       return Colors.blue;
     }
 
@@ -191,17 +274,17 @@ class Situacao extends StatelessWidget {
   }
 
   Text texto() {
-    if (tipo == Tipo.Disponivel) {
+    if (widget.tipo == Tipo.Disponivel) {
       return Text("Disponível", style: TextStyle(color: Colors.white));
     }
-    if (tipo == Tipo.Comprado) {
+    if (widget.tipo == Tipo.Comprado) {
       return Text("Comprado", style: TextStyle(color: Colors.white));
     }
-    if (tipo == Tipo.Entregue) {
+    if (widget.tipo == Tipo.Entregue) {
       return Text("Entregue", style: TextStyle(color: Colors.white));
     }
     return Text("");
   }
-}
 
+}
 enum Tipo { Disponivel, Comprado, Entregue }
