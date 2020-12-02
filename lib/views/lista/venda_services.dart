@@ -46,4 +46,19 @@ class VendaServices{
       return vendasResponse;
 
     }
+    Future <List<VendaDTO>> comprasDoUsuario(int uid) async{
+
+      String url = "https://furnicommerce.herokuapp.com/vendaUsuario";
+
+      Map<String, String> headers = {"Content-type": "application/json"};
+
+      String json = '{"uid":"${uid}"}';
+
+      Response response = await post(url,headers:headers,body:json);
+
+      List<VendaDTO> vendasResponse = VendaDTO().parseVenda(response.body);
+      
+      return vendasResponse;
+
+    }
 }
