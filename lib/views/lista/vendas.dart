@@ -16,6 +16,7 @@ class ItensLista {
 
     for (var venda in vendas) {
       elementos.add(ElementoLista(
+          observacao:venda.observacao,
           ehPerfil:ehPerfil,
           perfil: perfil,
           lista: lista,
@@ -87,6 +88,7 @@ class ElementoLista extends StatefulWidget {
       this.uid,
       this.perfil,
       this.ehPerfil,
+      this.observacao,
       this.lista})
       : super(key: key);
 
@@ -99,6 +101,7 @@ class ElementoLista extends StatefulWidget {
   final ListaViewUser lista;
   final int perfil;
   final bool ehPerfil;
+  final String observacao;
 
   @override
   _ElementoLista createState() => _ElementoLista();
@@ -248,13 +251,14 @@ class _ElementoLista extends State<ElementoLista> {
                     return AlertDialog(
                       content: Container(
                         width: MediaQuery.of(context).size.width * 0.8,
-                        height: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.width * 0.85,
                         child: Center(
                             child: Column(
                           children: [
                             Text("Preço R\$: ${venda[0].valor}"),
                             Text("Vendedor: ${venda[0].usuario_vendedor}"),
                             Text("Movel: ${DeParaMovel(venda[0].movel)}"),
+                            Text("Observação: ${venda[0].observacao}"),
                             Container(
                               width: 300,
                               height: 200,

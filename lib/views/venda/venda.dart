@@ -91,9 +91,11 @@ class _NovaVenda extends State<NovaVenda> {
                     decoration:
                         BoxDecoration(color: Color.fromRGBO(200, 200, 200, 0)),
                     child: TextFormField(
+                      maxLength: 10,
                       controller: observacao,
                       decoration: InputDecoration(
                         labelText: 'Observação',
+                        counterText: ""
                       ),
                     ),
                   ),

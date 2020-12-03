@@ -8,13 +8,12 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 class Lista extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
-    return ListaView(nome: nome,perfil:perfil,uid:uid);
+    return ListaView(nome: nome, perfil: perfil, uid: uid);
   }
 
-  Lista({Key key, this.nome,this.uid,this.perfil}) : super(key: key);
+  Lista({Key key, this.nome, this.uid, this.perfil}) : super(key: key);
 
   int uid;
   int perfil;
@@ -22,7 +21,8 @@ class Lista extends StatelessWidget {
 }
 
 class ListaView extends StatefulWidget {
-  ListaView({Key key,this.perfil ,this.nome = "teste",this.uid}) : super(key: key);
+  ListaView({Key key, this.perfil, this.nome = "teste", this.uid})
+      : super(key: key);
   String nome;
   int uid;
   int perfil;
@@ -34,8 +34,7 @@ class ListaView extends StatefulWidget {
 class ListaViewUser extends State<ListaView> {
   ItensLista itens = ItensLista();
   Future<List<VendaDTO>> vendas = VendaServices().ObterVendas();
-  
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +44,8 @@ class ListaViewUser extends State<ListaView> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            InkWell(child: Container(
+            InkWell(
+                child: Container(
               child: ListTile(
                 leading: Icon(
                   Icons.border_all,
@@ -59,18 +59,20 @@ class ListaViewUser extends State<ListaView> {
               ),
               decoration: BoxDecoration(color: Colors.brown),
             )),
-            InkWell(child:Container(
+            InkWell(
+                child: Container(
               child: ListTile(
                 leading: Icon(
                   Icons.add,
                   color: Colors.white,
                 ),
                 onTap: () => {
-                Navigator.pop(context),
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Venda(uid: widget.uid)),
-                ),
+                  Navigator.pop(context),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Venda(uid: widget.uid)),
+                  ),
                 },
                 title: Text(
                   'Venda',
@@ -79,17 +81,25 @@ class ListaViewUser extends State<ListaView> {
               ),
               decoration: BoxDecoration(color: Colors.brown),
             )),
-            InkWell(child:Container(
+            InkWell(
+                child: Container(
               child: ListTile(
                 leading: Icon(
                   Icons.person,
                   color: Colors.white,
                 ),
-                onTap: () => {Navigator.pop(context),
+                onTap: () => {
+                  Navigator.pop(context),
                   Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Perfil(nome: widget.nome,avaliacao: '4.5',uid:widget.uid,perfil:widget.perfil)),
-                )},
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Perfil(
+                            nome: widget.nome,
+                            avaliacao: '4.5',
+                            uid: widget.uid,
+                            perfil: widget.perfil)),
+                  )
+                },
                 title: Text(
                   'Perfil',
                   style: TextStyle(color: Colors.white),
@@ -97,17 +107,22 @@ class ListaViewUser extends State<ListaView> {
               ),
               decoration: BoxDecoration(color: Colors.brown),
             )),
-            InkWell(child:Container(
+            InkWell(
+                child: Container(
               child: ListTile(
                 leading: Icon(
                   Icons.data_usage,
                   color: Colors.white,
                 ),
-                onTap: () => {Navigator.pop(context),
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Relatorio()),
-                )},
+                onTap: () => {
+                  Navigator.pop(context),
+                  vendas.then((values) => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Relatorio(vendas:values)),
+                        )
+                      })
+                },
                 title: Text(
                   'Relatórios',
                   style: TextStyle(color: Colors.white),
@@ -115,7 +130,8 @@ class ListaViewUser extends State<ListaView> {
               ),
               decoration: BoxDecoration(color: Colors.brown),
             )),
-            InkWell(child:Container(
+            InkWell(
+                child: Container(
               child: ListTile(
                 leading: Icon(
                   Icons.exit_to_app,
@@ -134,14 +150,20 @@ class ListaViewUser extends State<ListaView> {
       ),
       body: Container(
         child: SingleChildScrollView(
-          child: FutureBuilder(future: vendas,builder: (context,snapshot){
-            if(!snapshot.hasData){
-              return Container(height:500,child:Center(child: CircularProgressIndicator()));
-            }else{
-              return Column(children: itens.Vendas(snapshot.data,widget.uid,this,widget.perfil,false));
-            }
-          })),
-        ),
+            child: FutureBuilder(
+                future: vendas,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Container(
+                        height: 500,
+                        child: Center(child: CircularProgressIndicator()));
+                  } else {
+                    return Column(
+                        children: itens.Vendas(snapshot.data, widget.uid, this,
+                            widget.perfil, false));
+                  }
+                })),
+      ),
     );
   }
 }
