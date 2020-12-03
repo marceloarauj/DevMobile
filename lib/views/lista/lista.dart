@@ -11,11 +11,7 @@ class Lista extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ListaView(nome: nome,perfil:perfil,uid:uid),
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.brown),
-    );
+    return ListaView(nome: nome,perfil:perfil,uid:uid);
   }
 
   Lista({Key key, this.nome,this.uid,this.perfil}) : super(key: key);
@@ -55,10 +51,7 @@ class ListaViewUser extends State<ListaView> {
                   Icons.border_all,
                   color: Colors.white,
                 ),
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Venda()),
-                ),
+                onTap: () => Navigator.pop(context),
                 title: Text(
                   'Inicio',
                   style: TextStyle(color: Colors.white),
@@ -92,10 +85,11 @@ class ListaViewUser extends State<ListaView> {
                   Icons.person,
                   color: Colors.white,
                 ),
-                onTap: () => Navigator.push(
+                onTap: () => {Navigator.pop(context),
+                  Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Perfil(nome: widget.nome,avaliacao: '4.5',uid:widget.uid,perfil:widget.perfil)),
-                ),
+                )},
                 title: Text(
                   'Perfil',
                   style: TextStyle(color: Colors.white),
@@ -109,10 +103,11 @@ class ListaViewUser extends State<ListaView> {
                   Icons.data_usage,
                   color: Colors.white,
                 ),
-                onTap: () => Navigator.push(
+                onTap: () => {Navigator.pop(context),
+                  Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Relatorio()),
-                ),
+                )},
                 title: Text(
                   'Relatórios',
                   style: TextStyle(color: Colors.white),

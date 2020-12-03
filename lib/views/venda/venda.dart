@@ -41,8 +41,10 @@ class _NovaVenda extends State<NovaVenda> {
       },
       child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: Text("Cadastro de venda"),
           ),
+          
           body: SingleChildScrollView(
             child: Center(
               child: Column(
