@@ -2,9 +2,10 @@ import 'dart:convert';
 
 class LoginDTO{
 
-  LoginDTO({this.mensagem, this.usuario_id, this.nome, this.email, this.cpf, this.error});
+  LoginDTO({this.perfil,this.mensagem, this.usuario_id, this.nome, this.email, this.cpf, this.error});
 
   final int usuario_id;
+  final int perfil;
   final String error;
   final String nome;
   final String email;
@@ -18,7 +19,8 @@ class LoginDTO{
       email:json['email'],
       cpf:json['cpf'],
       usuario_id: json['usuario_id'],
-      mensagem: json['mensagem']
+      mensagem: json['mensagem'],
+      perfil:json['perfil']
     );
   }
 

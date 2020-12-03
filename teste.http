@@ -1,6 +1,6 @@
-POST https://furnicommerce.herokuapp.com/vendaId
+POST https://furnicommerce.herokuapp.com/vendaUsuario
 Content-Type: application/json
 
 {
-    "venda_id": 15
+    "uid": 15
 }

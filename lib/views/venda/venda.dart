@@ -1,5 +1,6 @@
 import 'package:FurniCommerce/views/venda/novavenda_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 import 'NovaVendaDTO.dart';
 
@@ -9,13 +10,8 @@ class Venda extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: NovaVenda(uid: uid),
-      theme: ThemeData(
-        primarySwatch: Colors.brown,
-      ),
-      debugShowCheckedModeBanner: false,
-    );
+
+    return NovaVenda(uid:uid);
   }
 }
 
@@ -34,12 +30,14 @@ class _NovaVenda extends State<NovaVenda> {
   VendaServices novaVendaServices = VendaServices();
   TextEditingController valor = TextEditingController();
   TextEditingController observacao = TextEditingController();
+  final moneyMask = MoneyMaskedTextController(thousandSeparator: '',decimalSeparator: '.');
 
   @override
   Widget build(BuildContext context) {
+    BuildContext mainContext = context;
     return WillPopScope(
-      onWillPop: () async {
-        Navigator.of(context).pop(true);
+      onWillPop: ()async{
+        await Navigator.pop(context);
       },
       child: Scaffold(
           appBar: AppBar(
@@ -75,7 +73,7 @@ class _NovaVenda extends State<NovaVenda> {
                     child: Container(
                       width: 300,
                       child: TextFormField(
-                        controller: valor,
+                        controller: moneyMask,
                         maxLength: 8,
                         keyboardType:
                             TextInputType.numberWithOptions(signed: false),
@@ -123,7 +121,7 @@ class _NovaVenda extends State<NovaVenda> {
                           child: Text('Cadastrar Venda'),
                           onPressed: () => {
                             podeInserirVenda(
-                                context, widget.uid, novaVendaServices.imageB64, movel),
+                                context, widget.uid, novaVendaServices.imageB64, movel,mainContext),
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30)),
@@ -136,7 +134,7 @@ class _NovaVenda extends State<NovaVenda> {
     );
   }
 
-  podeInserirVenda(BuildContext context, int uid, String imageB64, int movel) {
+  podeInserirVenda(BuildContext context, int uid, String imageB64, int movel,BuildContext mainContext) {
     if (imageB64 == '') {
       showDialog(
           context: context,
@@ -153,7 +151,7 @@ class _NovaVenda extends State<NovaVenda> {
           });
           return null;
     }
-    if (movel == 0 || valor.text == '') {
+    if (movel == 0 || moneyMask.text == '') {
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -171,7 +169,7 @@ class _NovaVenda extends State<NovaVenda> {
     }
 
     Future<List<NovaVendaDTO>> novaVenda =
-        novaVendaServices.NovaVendaRequest(widget.uid, novaVendaServices.imageB64, movel,double.parse(valor.text),observacao.text);
+        novaVendaServices.NovaVendaRequest(widget.uid, novaVendaServices.imageB64, movel,double.parse(moneyMask.text),observacao.text);
     
     showDialog(
         context: context,
@@ -185,6 +183,7 @@ class _NovaVenda extends State<NovaVenda> {
             if(!snapshot.hasData){
               return Container(height:500,child:Center(child: CircularProgressIndicator()));
             }else{
+              Navigator.pop(mainContext);
               return Container(child:Text("Venda cadastrada !"));
             }
           })),

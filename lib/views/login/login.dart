@@ -2,6 +2,7 @@ import 'package:FurniCommerce/library/login_inputs.dart';
 import 'package:FurniCommerce/views/lista/lista.dart';
 import 'package:FurniCommerce/views/login/loginDTO.dart';
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'login_services.dart';
 
@@ -24,6 +25,7 @@ class LoginView extends StatefulWidget {
   TextEditingController cpf = TextEditingController();
   TextEditingController endereco = TextEditingController();
   TextEditingController nome = TextEditingController();
+  var cpfFormat = MaskTextInputFormatter(mask: '###.###.###-##');
 
   @override
   _LoginView createState() => _LoginView();
@@ -189,6 +191,7 @@ class _LoginView extends State<LoginView> {
           MaterialPageRoute(
               builder: (context) => Lista(
                   nome: loginSucesso[0].nome,
+                  perfil:loginSucesso[0].perfil,
                   uid: loginSucesso[0].usuario_id)));
     } else {
       mensagem = loginSucesso[0].error;
@@ -229,7 +232,8 @@ class _LoginView extends State<LoginView> {
           ),
           Padding(padding: EdgeInsets.only(top: 20)),
           LoginInput(
-            length:11,
+            mask: [widget.cpfFormat],
+            length:14,
             text: "CPF",
             value: widget.cpf,
             password: false,

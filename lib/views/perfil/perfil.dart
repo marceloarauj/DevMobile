@@ -6,14 +6,15 @@ import 'package:flutter/material.dart';
 class Perfil extends StatelessWidget {
   String nome, avaliacao;
   int uid;
+  int perfil;
 
-  Perfil({this.nome, this.avaliacao,this.uid});
+  Perfil({this.perfil,this.nome, this.avaliacao,this.uid});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: PerfilPage(nome: this.nome, avaliacao: this.avaliacao,uid:this.uid),
+      home: PerfilPage(nome: this.nome, avaliacao: this.avaliacao,uid:this.uid,perfil:perfil),
     );
   }
 }
@@ -21,7 +22,8 @@ class Perfil extends StatelessWidget {
 class PerfilPage extends StatefulWidget {
   String nome, avaliacao;
   int uid;
-  PerfilPage({this.nome, this.avaliacao,this.uid});
+  int perfil;
+  PerfilPage({this.nome, this.avaliacao,this.uid,this.perfil});
 
   @override
   _PerfilPage createState() => _PerfilPage();
@@ -34,7 +36,7 @@ class _PerfilPage extends State<PerfilPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<VendaDTO>> compras = services.obterVendaPorId(widget.uid);
+    Future<List<VendaDTO>> compras = services.comprasDoUsuario(widget.uid);
 
     return Scaffold(
         body: Center(
@@ -49,7 +51,7 @@ class _PerfilPage extends State<PerfilPage> {
                     child: Text('${this.widget.nome}'),
                   ),
                   Container(
-                    child: Text('Avaliação: ${this.widget.avaliacao}'),
+                    child: Container(),
                   ),
                   Divider(
                     color: Colors.grey,
@@ -66,8 +68,8 @@ class _PerfilPage extends State<PerfilPage> {
                   ),
                   Padding(
                       padding: EdgeInsets.only(top: 40),
-                      child: Container(
-                        height: 540,
+                      child: SingleChildScrollView(child:Container(
+                        height: 500,
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
@@ -75,13 +77,13 @@ class _PerfilPage extends State<PerfilPage> {
                                 if(!snapshot.hasData){
                                   return Center(child: CircularProgressIndicator());
                                 }else{
-                                  return SingleChildScrollView(child:Column(children:itens.Vendas(snapshot.data, widget.uid, null)));
+                                  return SingleChildScrollView(child:Column(children:itens.Vendas(snapshot.data, widget.uid, null,widget.perfil,true)));
                                 }
                               })
                             ]
                           ),
                         ),
-                      ))
+                      )))
                 ],
               ),
             ),

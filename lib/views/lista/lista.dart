@@ -12,22 +12,24 @@ class Lista extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ListaView(nome: nome,uid:uid),
+      home: ListaView(nome: nome,perfil:perfil,uid:uid),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.brown),
     );
   }
 
-  Lista({Key key, this.nome,this.uid}) : super(key: key);
+  Lista({Key key, this.nome,this.uid,this.perfil}) : super(key: key);
 
   int uid;
+  int perfil;
   String nome;
 }
 
 class ListaView extends StatefulWidget {
-  ListaView({Key key, this.nome = "teste",this.uid}) : super(key: key);
+  ListaView({Key key,this.perfil ,this.nome = "teste",this.uid}) : super(key: key);
   String nome;
   int uid;
+  int perfil;
 
   @override
   ListaViewUser createState() => ListaViewUser();
@@ -70,10 +72,13 @@ class ListaViewUser extends State<ListaView> {
                   Icons.add,
                   color: Colors.white,
                 ),
-                onTap: () => Navigator.push(
+                onTap: () => {
+                Navigator.pop(context),
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Venda(uid: widget.uid)),
                 ),
+                },
                 title: Text(
                   'Venda',
                   style: TextStyle(color: Colors.white),
@@ -89,7 +94,7 @@ class ListaViewUser extends State<ListaView> {
                 ),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Perfil(nome: 'Teste',avaliacao: '4.5',)),
+                  MaterialPageRoute(builder: (context) => Perfil(nome: widget.nome,avaliacao: '4.5',uid:widget.uid,perfil:widget.perfil)),
                 ),
                 title: Text(
                   'Perfil',
@@ -138,7 +143,7 @@ class ListaViewUser extends State<ListaView> {
             if(!snapshot.hasData){
               return Container(height:500,child:Center(child: CircularProgressIndicator()));
             }else{
-              return Column(children: itens.Vendas(snapshot.data,widget.uid,this));
+              return Column(children: itens.Vendas(snapshot.data,widget.uid,this,widget.perfil,false));
             }
           })),
         ),

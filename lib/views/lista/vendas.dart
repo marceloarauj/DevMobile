@@ -10,11 +10,14 @@ import 'package:flutter/material.dart';
 import 'lista.dart';
 
 class ItensLista {
-  List<Widget> Vendas(List<VendaDTO> vendas, int uid, ListaViewUser lista) {
+  List<Widget> Vendas(
+      List<VendaDTO> vendas, int uid, ListaViewUser lista, int perfil,bool ehPerfil) {
     List<ElementoLista> elementos = List<ElementoLista>();
 
     for (var venda in vendas) {
       elementos.add(ElementoLista(
+          ehPerfil:ehPerfil,
+          perfil: perfil,
           lista: lista,
           uid: uid,
           id: venda.venda_id,
@@ -82,6 +85,8 @@ class ElementoLista extends StatefulWidget {
       this.movel,
       this.id,
       this.uid,
+      this.perfil,
+      this.ehPerfil,
       this.lista})
       : super(key: key);
 
@@ -92,6 +97,8 @@ class ElementoLista extends StatefulWidget {
   final int id;
   final int uid;
   final ListaViewUser lista;
+  final int perfil;
+  final bool ehPerfil;
 
   @override
   _ElementoLista createState() => _ElementoLista();
@@ -129,9 +136,13 @@ class _ElementoLista extends State<ElementoLista> {
     return Image.memory(bytes);
   }
 
-  Widget podeComprar(int status, int idVenda, int uid, BuildContext context) {
+  Widget podeComprar(int status, int idVenda, int uid, BuildContext context,BuildContext modelContext) {
     BuildContext dialogContx = null;
     List<VendaDTO> venda;
+
+    if(widget.ehPerfil){
+      return Container();
+    }
 
     if (status == 1) {
       return RaisedButton(
@@ -153,23 +164,9 @@ class _ElementoLista extends State<ElementoLista> {
                     }),
                 venda = await widget.services.comprarMovel(idVenda, uid),
                 Navigator.pop(dialogContx),
-                showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      dialogContx = context;
-                      return StatefulBuilder(builder: (context, setState) {
-                        return AlertDialog(
-                          content: Container(
-                            width: MediaQuery.of(context).size.width * 0.8,
-                            height: 30,
-                            child: Center(child: Text('${venda[0].message}')),
-                          ),
-                        );
-                      });
-                    }),
                 widget.tipo = Tipo.Comprado,
-                setState(() => {})
+                setState(() => {}),
+                Navigator.pop(modelContext)
               },
           elevation: 3.5,
           color: Colors.green,
@@ -179,6 +176,38 @@ class _ElementoLista extends State<ElementoLista> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0)));
     }
+    if (widget.perfil == 1 && status == 2) {
+      return Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: Container(child: RaisedButton(child: Text("Alterar Status"),onPressed: () async {
+                        showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  dialogContx = context;
+                  return StatefulBuilder(builder: (context, setState) {
+                    dialogContx = context;
+                    return AlertDialog(
+                      content: Container(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: 30,
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                    );
+                  });
+                });
+                await widget.services.entregar(idVenda);
+                Navigator.pop(dialogContx);
+                widget.tipo = Tipo.Entregue;
+                setState(() => {});
+                Navigator.pop(modelContext);
+
+          })));
+    }
+    if((widget.perfil == 1 && status == 3)|| widget.ehPerfil){
+      return Container();
+    }
+    
     return Padding(
         padding: EdgeInsets.only(top: 10),
         child: Container(child: Text("Produto não disponível")));
@@ -209,11 +238,13 @@ class _ElementoLista extends State<ElementoLista> {
             List<VendaDTO> venda =
                 await widget.services.obterVendaPorId(widget.id);
             Navigator.pop(dialogContx);
+            BuildContext modelContext;
             showDialog(
                 context: context,
                 barrierDismissible: false,
                 builder: (BuildContext context) {
                   return StatefulBuilder(builder: (context, setState) {
+                    modelContext = context;
                     return AlertDialog(
                       content: Container(
                         width: MediaQuery.of(context).size.width * 0.8,
@@ -230,7 +261,7 @@ class _ElementoLista extends State<ElementoLista> {
                               child: fromBase64Image(venda[0].imagem),
                             ),
                             podeComprar(venda[0].status_venda, widget.id,
-                                widget.uid, context)
+                                widget.uid, context,modelContext)
                           ],
                         )),
                       ),
@@ -249,11 +280,15 @@ class _ElementoLista extends State<ElementoLista> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(top: 10, left: 10),
-                    child: Text("${widget.movel}"),
+                    child: Container(
+                        width: 90,
+                        child: Center(child: Text("${widget.movel}"))),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 10, left: 0),
-                    child: Text("${widget.data}"),
+                    child: Container(
+                        width: 90,
+                        child: Center(child: Text("${widget.data}"))),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 10, right: 10),
