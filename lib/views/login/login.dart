@@ -39,9 +39,9 @@ class _LoginView extends State<LoginView> {
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/bg2.jpg"),
+              image: AssetImage("assets/bg3.jpg"),
               colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.1), BlendMode.srcOver),
+                  Colors.black.withOpacity(0.4), BlendMode.srcOver),
               fit: BoxFit.fill,
             ),
           ),
@@ -83,7 +83,8 @@ class _LoginView extends State<LoginView> {
             ),
           )),
       floatingActionButton: FloatingActionButton(
-          child: Icon(getIconLogin()),
+          child: Icon(getIconLogin(),color: Colors.black,),
+          backgroundColor: Colors.white,
           onPressed: () => setLoginRegistrarButton()),
     );
   }
@@ -209,8 +210,8 @@ class _LoginView extends State<LoginView> {
   Widget ehLogin() {
     if (widget.ehLogin) {
       return Container(
-        color: Colors.black.withOpacity(0.0),
-        width: MediaQuery.of(context).size.width * 0.5,
+        color: Colors.white.withOpacity(0.0),
+        width: MediaQuery.of(context).size.width * 0.9,
         child: Image.asset('assets/logo.png'),
       );
     }

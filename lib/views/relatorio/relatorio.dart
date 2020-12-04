@@ -33,6 +33,20 @@ class _RelatorioView extends State<RelatorioView>{
       String ano = data.substring(0, 4);
       return ano;
     }
+    Map<String,String> DeParaData = {
+      '1':'Jan',
+      '2':'Fev',
+      '3':'Mar',
+      '4':'Abr',
+      '5':'Mai',
+      '6':'Jun',
+      '7':'Jul',
+      '8':'Ago',
+      '9':'Set',
+      '10':'Out',
+      '11':'Nov',
+      '12':'Dez'
+    };
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +81,7 @@ class _RelatorioView extends State<RelatorioView>{
 
     vendas.forEach((key, value) { 
 
-      vendasMes.add(VendaAno(value,'',charts.ColorUtil.fromDartColor(Colors.purple),key));
+      vendasMes.add(VendaAno(value,'',charts.ColorUtil.fromDartColor(Colors.purple),DeParaData[key]));
 
     });
 

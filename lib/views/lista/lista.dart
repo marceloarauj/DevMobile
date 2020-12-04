@@ -35,6 +35,15 @@ class ListaViewUser extends State<ListaView> {
   ItensLista itens = ItensLista();
   Future<List<VendaDTO>> vendas = VendaServices().ObterVendas();
 
+  bool disponivel = true;
+  void disponivelCheck(bool value) => setState(() => disponivel = value);
+
+  bool comprado = true;
+  void compradoCheck(bool value) => setState(() => comprado = value);
+
+  bool entregue = true;
+  void entregueCheck(bool value) => setState(() => entregue = value);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,7 +128,8 @@ class ListaViewUser extends State<ListaView> {
                   vendas.then((values) => {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Relatorio(vendas:values)),
+                          MaterialPageRoute(
+                              builder: (context) => Relatorio(vendas: values)),
                         )
                       })
                 },
@@ -163,6 +173,61 @@ class ListaViewUser extends State<ListaView> {
                             widget.perfil, false));
                   }
                 })),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.search),
+        backgroundColor: Colors.black,
+        onPressed: () => {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return StatefulBuilder(builder: (context, setState) {
+                  return AlertDialog(
+                    content: Container(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.width * 0.85,
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Checkbox(
+                                  value: disponivel,
+                                  activeColor: Colors.black,
+                                  onChanged: disponivelCheck,
+                                  checkColor: Colors.green,
+                                ),
+                                Text('Disponível')
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Checkbox(
+                                  value: comprado,
+                                  activeColor: Colors.black,
+                                  onChanged: compradoCheck,
+                                  checkColor: Colors.green,
+                                ),
+                                Text('Comprado')
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Checkbox(
+                                  value: entregue,
+                                  activeColor: Colors.black,
+                                  onChanged: entregueCheck,
+                                  checkColor: Colors.green,
+                                ),
+                                Text('Entregue')
+                              ],
+                            )
+                          ],
+                        )),
+                  );
+                });
+              })
+        },
       ),
     );
   }
