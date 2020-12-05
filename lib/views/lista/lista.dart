@@ -34,6 +34,8 @@ class ListaView extends StatefulWidget {
 class ListaViewUser extends State<ListaView> {
   ItensLista itens = ItensLista();
   Future<List<VendaDTO>> vendas = VendaServices().ObterVendas();
+  List<VendaDTO> vendasCarregadas;
+  List<VendaDTO> vendasFiltro = null;
 
   bool disponivel = true;
   void disponivelCheck(bool value) => state(() => disponivel = value);
@@ -61,7 +63,31 @@ class ListaViewUser extends State<ListaView> {
   void armarioCheck(bool value) => state(() => armario = value);
   void cadeiraCheck(bool value) => state(() => cadeira = value);
   void estanteCheck(bool value) => state(() => estante = value);
+  
+  List<VendaDTO> filtrar(){
+    vendasFiltro = List<VendaDTO>();
+    List<VendaDTO> removeList = List<VendaDTO>();
 
+    for (var item in vendasCarregadas) {
+      if(cama && item.movel == 1){vendasFiltro.add(item);}
+      if(sofa && item.movel == 2){vendasFiltro.add(item);}
+      if(poltrona && item.movel == 3){vendasFiltro.add(item);}
+      if(armario && item.movel == 4){vendasFiltro.add(item);}
+      if(mesa && item.movel == 5){vendasFiltro.add(item);}
+      if(cadeira && item.movel == 6){vendasFiltro.add(item);}
+      if(estante && item.movel == 7){vendasFiltro.add(item);}
+    }
+
+    for (var item in vendasFiltro) {
+      if(item.status_venda == 1 && !disponivel){removeList.add(item);}
+      if(item.status_venda == 2 && !comprado){removeList.add(item);}
+      if(item.status_venda == 3 && !entregue){removeList.add(item);}
+    }
+    for (var item in removeList) {
+      vendasFiltro.remove(item);
+    }
+    setState(() {});
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -186,8 +212,12 @@ class ListaViewUser extends State<ListaView> {
                         height: 500,
                         child: Center(child: CircularProgressIndicator()));
                   } else {
+                    vendasCarregadas = snapshot.data;
+                    if(vendasFiltro == null){
+                      vendasFiltro = vendasCarregadas;
+                    }
                     return Column(
-                        children: itens.Vendas(snapshot.data, widget.uid, this,
+                        children: itens.Vendas(vendasFiltro, widget.uid, this,
                             widget.perfil, false));
                   }
                 })),
@@ -340,7 +370,7 @@ class ListaViewUser extends State<ListaView> {
                                       'Filtrar',
                                       style: TextStyle(color: Colors.white),
                                     ),
-                                    onPressed: () => {setState(() => {})})
+                                    onPressed: () => {filtrar(),Navigator.pop(context)})
                               ],
                             )
                           ],
