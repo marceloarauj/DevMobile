@@ -30,7 +30,7 @@ class _LoginView extends State<LoginView> {
 
   TextEditingController login = TextEditingController();
   TextEditingController senha = TextEditingController();
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +85,7 @@ class _LoginView extends State<LoginView> {
       floatingActionButton: FloatingActionButton(
           child: Icon(getIconLogin(),color: Colors.black,),
           backgroundColor: Colors.white,
+          mini: true,
           onPressed: () => setLoginRegistrarButton()),
     );
   }
@@ -211,7 +212,7 @@ class _LoginView extends State<LoginView> {
     if (widget.ehLogin) {
       return Container(
         color: Colors.white.withOpacity(0.0),
-        width: MediaQuery.of(context).size.width * 0.9,
+        width: MediaQuery.of(context).size.width * 0.8,
         child: Image.asset('assets/logo.png'),
       );
     }

@@ -178,6 +178,7 @@ class _NovaVenda extends State<NovaVenda> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
+          mainContext = context;
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
               content: Container(
