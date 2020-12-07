@@ -12,7 +12,7 @@ class LoginServices {
     
     String url = "https://furnicommerce.herokuapp.com/login";
 
-    String json = '{"email": "${login}", "senha": "${senha}"}';
+    String json = '{"email": "${login.trim().replaceAll("\\s+", " ")}", "senha": "${senha}"}';
 
     Response response = await post(url,headers: headers,body: json);
 
