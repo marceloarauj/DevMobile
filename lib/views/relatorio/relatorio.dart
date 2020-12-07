@@ -78,20 +78,21 @@ class _RelatorioView extends State<RelatorioView>{
       }
     }
     List<VendaAno> vendasMes =[];
-
+    
     vendas.forEach((key, value) { 
 
       vendasMes.add(VendaAno(value,'',charts.ColorUtil.fromDartColor(Colors.purple),DeParaData[key]));
 
     });
-
+    
     List<charts.Series<VendaAno,String>> series=[
       charts.Series(
         id:"Vendas",
         data: vendasAno,
         domainFn: (VendaAno series,_) => series.ano,
         measureFn: (VendaAno series,_)=>series.vendas,
-        colorFn: (VendaAno series,_)=> series.barColor
+        colorFn: (VendaAno series,_)=> series.barColor,
+        
       )
     ];
 
@@ -101,7 +102,8 @@ class _RelatorioView extends State<RelatorioView>{
         data: vendasMes,
         domainFn: (VendaAno seriesMes,_) => seriesMes.mes,
         measureFn: (VendaAno seriesMes,_)=>seriesMes.vendas,
-        colorFn: (VendaAno seriesMes,_)=> seriesMes.barColor
+        colorFn: (VendaAno seriesMes,_)=> seriesMes.barColor,
+        labelAccessorFn: (VendaAno seriesMes,_)=> '${seriesMes.mes} : ${seriesMes.vendas}'
       )
     ];
     return Scaffold(
@@ -119,7 +121,7 @@ class _RelatorioView extends State<RelatorioView>{
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.5,
-                child: charts.BarChart(seriesMes,animate: true,),
+                child: charts.PieChart(seriesMes,animate: true,),
               ),              
           ],
         )),
