@@ -43,18 +43,20 @@ class _PerfilPage extends State<PerfilPage> {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 40),
+            padding: EdgeInsets.only(top: 0),
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   Container(
-                    child: Text('${this.widget.nome}'),
-                  ),
-                  Container(
-                    child: Container(),
-                  ),
-                  Divider(
-                    color: Colors.grey,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    color: Colors.brown[400],
+                    child: Center(
+                      child: Text('${this.widget.nome}',style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          )),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 40),

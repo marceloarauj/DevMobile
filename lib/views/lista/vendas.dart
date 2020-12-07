@@ -10,14 +10,14 @@ import 'package:flutter/material.dart';
 import 'lista.dart';
 
 class ItensLista {
-  List<Widget> Vendas(
-      List<VendaDTO> vendas, int uid, ListaViewUser lista, int perfil,bool ehPerfil) {
+  List<Widget> Vendas(List<VendaDTO> vendas, int uid, ListaViewUser lista,
+      int perfil, bool ehPerfil) {
     List<ElementoLista> elementos = List<ElementoLista>();
 
     for (var venda in vendas) {
       elementos.add(ElementoLista(
-          observacao:venda.observacao,
-          ehPerfil:ehPerfil,
+          observacao: venda.observacao,
+          ehPerfil: ehPerfil,
           perfil: perfil,
           lista: lista,
           uid: uid,
@@ -139,11 +139,12 @@ class _ElementoLista extends State<ElementoLista> {
     return Image.memory(bytes);
   }
 
-  Widget podeComprar(int status, int idVenda, int uid, BuildContext context,BuildContext modelContext) {
+  Widget podeComprar(int status, int idVenda, int uid, BuildContext context,
+      BuildContext modelContext) {
     BuildContext dialogContx = null;
     List<VendaDTO> venda;
 
-    if(widget.ehPerfil){
+    if (widget.ehPerfil) {
       return Container();
     }
 
@@ -182,35 +183,38 @@ class _ElementoLista extends State<ElementoLista> {
     if (widget.perfil == 1 && status == 2) {
       return Padding(
           padding: EdgeInsets.only(top: 10),
-          child: Container(child: RaisedButton(child: Text("Alterar Status"),onPressed: () async {
-                        showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  dialogContx = context;
-                  return StatefulBuilder(builder: (context, setState) {
-                    dialogContx = context;
-                    return AlertDialog(
-                      content: Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: 30,
-                        child: Center(child: CircularProgressIndicator()),
-                      ),
-                    );
-                  });
-                });
-                await widget.services.entregar(idVenda);
-                Navigator.pop(dialogContx);
-                widget.tipo = Tipo.Entregue;
-                setState(() => {});
-                Navigator.pop(modelContext);
-
-          })));
+          child: Container(
+              child: RaisedButton(
+                  child: Text("Alterar Status"),
+                  onPressed: () async {
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          dialogContx = context;
+                          return StatefulBuilder(builder: (context, setState) {
+                            dialogContx = context;
+                            return AlertDialog(
+                              content: Container(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                height: 30,
+                                child:
+                                    Center(child: CircularProgressIndicator()),
+                              ),
+                            );
+                          });
+                        });
+                    await widget.services.entregar(idVenda);
+                    Navigator.pop(dialogContx);
+                    widget.tipo = Tipo.Entregue;
+                    setState(() => {});
+                    Navigator.pop(modelContext);
+                  })));
     }
-    if((widget.perfil == 1 && status == 3)|| widget.ehPerfil){
+    if ((widget.perfil == 1 && status == 3) || widget.ehPerfil) {
       return Container();
     }
-    
+
     return Padding(
         padding: EdgeInsets.only(top: 10),
         child: Container(child: Text("Produto não disponível")));
@@ -265,7 +269,7 @@ class _ElementoLista extends State<ElementoLista> {
                               child: fromBase64Image(venda[0].imagem),
                             ),
                             podeComprar(venda[0].status_venda, widget.id,
-                                widget.uid, context,modelContext)
+                                widget.uid, context, modelContext)
                           ],
                         )),
                       ),
@@ -278,7 +282,18 @@ class _ElementoLista extends State<ElementoLista> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                   color: Color.fromRGBO(240, 240, 240, 0),
-                  border: Border.all(width: 0.2, color: Colors.grey)),
+                  border: Border.all(width: 0.2, color: Colors.grey),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey[350],
+                      blurRadius: 15.0, // soften the shadow
+                      spreadRadius: 1.0, //extend the shadow
+                      offset: Offset(
+                        15.0, // Move to right 10  horizontally
+                        15.0, // Move to bottom 10 Vertically
+                      ),
+                    )
+                  ]),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -286,13 +301,17 @@ class _ElementoLista extends State<ElementoLista> {
                     padding: EdgeInsets.only(top: 10, left: 10),
                     child: Container(
                         width: 90,
-                        child: Center(child: Text("${widget.movel}"))),
+                        child: Center(child: Text("${widget.movel}",style: TextStyle(
+                          color: Colors.indigo[900]
+                        ),))),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 10, left: 0),
                     child: Container(
                         width: 90,
-                        child: Center(child: Text("${widget.data}"))),
+                        child: Center(child: Text("${widget.data}",style: TextStyle(
+                          color: Colors.indigo[900]
+                        )))),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 10, right: 10),
