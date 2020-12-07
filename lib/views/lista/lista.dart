@@ -34,16 +34,60 @@ class ListaView extends StatefulWidget {
 class ListaViewUser extends State<ListaView> {
   ItensLista itens = ItensLista();
   Future<List<VendaDTO>> vendas = VendaServices().ObterVendas();
+  List<VendaDTO> vendasCarregadas;
+  List<VendaDTO> vendasFiltro = null;
 
   bool disponivel = true;
-  void disponivelCheck(bool value) => setState(() => disponivel = value);
+  void disponivelCheck(bool value) => state(() => disponivel = value);
 
   bool comprado = true;
-  void compradoCheck(bool value) => setState(() => comprado = value);
+  void compradoCheck(bool value) => state(() => comprado = value);
 
   bool entregue = true;
-  void entregueCheck(bool value) => setState(() => entregue = value);
+  void entregueCheck(bool value) => state(() => entregue = value);
 
+  Function state;
+
+  bool cama = true;
+  bool sofa = true;
+  bool mesa = true;
+  bool poltrona = true;
+  bool armario = true;
+  bool cadeira = true;
+  bool estante = true;
+
+  void camaCheck(bool value) => state(() => cama = value);
+  void sofaCheck(bool value) => state(() => sofa = value);
+  void mesaCheck(bool value) => state(() => mesa = value);
+  void poltronaCheck(bool value) => state(() => poltrona = value);
+  void armarioCheck(bool value) => state(() => armario = value);
+  void cadeiraCheck(bool value) => state(() => cadeira = value);
+  void estanteCheck(bool value) => state(() => estante = value);
+  
+  List<VendaDTO> filtrar(){
+    vendasFiltro = List<VendaDTO>();
+    List<VendaDTO> removeList = List<VendaDTO>();
+
+    for (var item in vendasCarregadas) {
+      if(cama && item.movel == 1){vendasFiltro.add(item);}
+      if(sofa && item.movel == 2){vendasFiltro.add(item);}
+      if(poltrona && item.movel == 3){vendasFiltro.add(item);}
+      if(armario && item.movel == 4){vendasFiltro.add(item);}
+      if(mesa && item.movel == 5){vendasFiltro.add(item);}
+      if(cadeira && item.movel == 6){vendasFiltro.add(item);}
+      if(estante && item.movel == 7){vendasFiltro.add(item);}
+    }
+
+    for (var item in vendasFiltro) {
+      if(item.status_venda == 1 && !disponivel){removeList.add(item);}
+      if(item.status_venda == 2 && !comprado){removeList.add(item);}
+      if(item.status_venda == 3 && !entregue){removeList.add(item);}
+    }
+    for (var item in removeList) {
+      vendasFiltro.remove(item);
+    }
+    setState(() {});
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,14 +212,19 @@ class ListaViewUser extends State<ListaView> {
                         height: 500,
                         child: Center(child: CircularProgressIndicator()));
                   } else {
+                    vendasCarregadas = snapshot.data;
+                    if(vendasFiltro == null){
+                      vendasFiltro = vendasCarregadas;
+                    }
                     return Column(
-                        children: itens.Vendas(snapshot.data, widget.uid, this,
+                        children: itens.Vendas(vendasFiltro, widget.uid, this,
                             widget.perfil, false));
                   }
                 })),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.search),
+        mini: true,
         backgroundColor: Colors.black,
         onPressed: () => {
           showDialog(
@@ -183,10 +232,11 @@ class ListaViewUser extends State<ListaView> {
               barrierDismissible: false,
               builder: (BuildContext context) {
                 return StatefulBuilder(builder: (context, setState) {
+                  state = setState;
                   return AlertDialog(
                     content: Container(
                         width: MediaQuery.of(context).size.width * 0.8,
-                        height: MediaQuery.of(context).size.width * 0.85,
+                        height: MediaQuery.of(context).size.width * 0.95,
                         child: Column(
                           children: [
                             Row(
@@ -197,7 +247,7 @@ class ListaViewUser extends State<ListaView> {
                                   onChanged: disponivelCheck,
                                   checkColor: Colors.green,
                                 ),
-                                Text('Disponível')
+                                Situacao(tipo: Tipo.Disponivel)
                               ],
                             ),
                             Row(
@@ -208,7 +258,7 @@ class ListaViewUser extends State<ListaView> {
                                   onChanged: compradoCheck,
                                   checkColor: Colors.green,
                                 ),
-                                Text('Comprado')
+                                Situacao(tipo: Tipo.Comprado)
                               ],
                             ),
                             Row(
@@ -219,7 +269,108 @@ class ListaViewUser extends State<ListaView> {
                                   onChanged: entregueCheck,
                                   checkColor: Colors.green,
                                 ),
-                                Text('Entregue')
+                                Situacao(tipo: Tipo.Entregue)
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 30),
+                            ),
+                            Row(
+                              children: [
+                                Checkbox(
+                                  value: cama,
+                                  activeColor: Colors.black,
+                                  onChanged: camaCheck,
+                                  checkColor: Colors.green,
+                                ),
+                                Text('Cama'),
+                                Checkbox(
+                                  value: sofa,
+                                  activeColor: Colors.black,
+                                  onChanged: sofaCheck,
+                                  checkColor: Colors.green,
+                                ),
+                                Text('Sofá'),
+                                Checkbox(
+                                  value: mesa,
+                                  activeColor: Colors.black,
+                                  onChanged: mesaCheck,
+                                  checkColor: Colors.green,
+                                ),
+                                Text('Mesa')
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Checkbox(
+                                  value: poltrona,
+                                  activeColor: Colors.black,
+                                  onChanged: poltronaCheck,
+                                  checkColor: Colors.green,
+                                ),
+                                Text('Poltrona'),
+                                Checkbox(
+                                  value: armario,
+                                  activeColor: Colors.black,
+                                  onChanged: armarioCheck,
+                                  checkColor: Colors.green,
+                                ),
+                                Text('Armário'),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Checkbox(
+                                  value: cadeira,
+                                  activeColor: Colors.black,
+                                  onChanged: cadeiraCheck,
+                                  checkColor: Colors.green,
+                                ),
+                                Text('Cadeira'),
+                                Checkbox(
+                                  value: estante,
+                                  activeColor: Colors.black,
+                                  onChanged: estanteCheck,
+                                  checkColor: Colors.green,
+                                ),
+                                Text('Estante'),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 20),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                RaisedButton(
+                                    color: Colors.orange,
+                                    child: Text(
+                                      'Limpar',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onPressed: () => {
+                                          disponivel = false,
+                                          comprado = false,
+                                          entregue = false,
+                                          cama = false,
+                                          sofa = false,
+                                          mesa = false,
+                                          poltrona = false,
+                                          armario = false,
+                                          cadeira = false,
+                                          estante = false,
+                                          setState(() => {})
+                                        }),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 20),
+                                ),
+                                RaisedButton(
+                                    color: Colors.black,
+                                    child: Text(
+                                      'Filtrar',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onPressed: () => {filtrar(),Navigator.pop(context)})
                               ],
                             )
                           ],

@@ -112,12 +112,13 @@ class _NovaVenda extends State<NovaVenda> {
                                   color: Colors.brown,
                                   icon: Icon(Icons.camera_alt),
                                   onPressed: () =>
-                                      setState(() => {podeAbrirCamera = true})))
+                                      setState(() => {novaVendaServices.imageB64 ='' ,podeAbrirCamera = true})))
                         ],
                       ),
                     ),
                   ),
-                  novaVendaServices.abrirCamera(podeAbrirCamera),
+                  novaVendaServices.abrirCamera(podeAbrirCamera,setState),
+                  
                   Padding(
                       padding: EdgeInsets.only(top: 40),
                       child: Container(
@@ -178,6 +179,7 @@ class _NovaVenda extends State<NovaVenda> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
+          mainContext = context;
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
               content: Container(
