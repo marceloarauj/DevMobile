@@ -44,7 +44,7 @@ class _NovaVenda extends State<NovaVenda> {
             centerTitle: true,
             title: Text("Cadastro de venda"),
           ),
-          
+          backgroundColor: Colors.grey[300],
           body: SingleChildScrollView(
             child: Center(
               child: Column(
@@ -52,6 +52,7 @@ class _NovaVenda extends State<NovaVenda> {
                   Padding(
                       padding: EdgeInsets.only(top: 30),
                       child: Container(
+                        width: 300,
                           padding:
                               const EdgeInsets.only(left: 10.0, right: 10.0),
                           decoration: BoxDecoration(
@@ -94,6 +95,7 @@ class _NovaVenda extends State<NovaVenda> {
                       maxLength: 10,
                       controller: observacao,
                       decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.remove_red_eye),
                         labelText: 'Observação',
                         counterText: ""
                       ),
@@ -108,11 +110,14 @@ class _NovaVenda extends State<NovaVenda> {
                           Text('Tire uma foto do móvel'),
                           Padding(
                               padding: EdgeInsets.only(left: 40),
-                              child: IconButton(
-                                  color: Colors.brown,
+                              child: Container(
+                                decoration: BoxDecoration(color:Colors.grey[400],shape: BoxShape.circle),
+                                child: IconButton(
+                                  color: Colors.black,                                  
                                   icon: Icon(Icons.camera_alt),
                                   onPressed: () =>
-                                      setState(() => {novaVendaServices.imageB64 ='' ,podeAbrirCamera = true})))
+                                      setState(() => {novaVendaServices.imageB64 ='' ,podeAbrirCamera = true})),
+                              ))
                         ],
                       ),
                     ),
@@ -123,10 +128,11 @@ class _NovaVenda extends State<NovaVenda> {
                       padding: EdgeInsets.only(top: 40),
                       child: Container(
                         child: RaisedButton(
+                          color: Colors.green[300],
                           child: Text('Cadastrar Venda'),
                           onPressed: () => {
                             podeInserirVenda(
-                                context, widget.uid, novaVendaServices.imageB64, movel,mainContext),
+                                context, widget.uid, novaVendaServices.imageB64, movel,context),
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30)),
@@ -139,7 +145,7 @@ class _NovaVenda extends State<NovaVenda> {
     );
   }
 
-  podeInserirVenda(BuildContext context, int uid, String imageB64, int movel,BuildContext mainContext) {
+  podeInserirVenda(BuildContext context, int uid, String imageB64, int movel,BuildContext mainContext) async {
     if (imageB64 == '') {
       showDialog(
           context: context,
@@ -172,14 +178,12 @@ class _NovaVenda extends State<NovaVenda> {
           });
       return null;
     }
-
+    await Navigator.pop(mainContext);
     Future<List<NovaVendaDTO>> novaVenda =
         novaVendaServices.NovaVendaRequest(widget.uid, novaVendaServices.imageB64, movel,double.parse(moneyMask.text),observacao.text);
-    
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          mainContext = context;
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
               content: Container(
@@ -189,7 +193,6 @@ class _NovaVenda extends State<NovaVenda> {
             if(!snapshot.hasData){
               return Container(height:500,child:Center(child: CircularProgressIndicator()));
             }else{
-              Navigator.pop(mainContext);
               return Container(child:Text("Venda cadastrada !"));
             }
           })),
