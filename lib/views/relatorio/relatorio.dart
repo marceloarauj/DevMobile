@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:FurniCommerce/views/lista/vendaDTO.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -126,7 +128,38 @@ class _RelatorioView extends State<RelatorioView>{
       ),
     );
   }
+Color randomColor(){
+    List colors = [
+      Colors.red,
+      Colors.red[100],
+      Colors.red[200],
+      Colors.red[300],
+      Colors.red[400],
+      Colors.lime,
+      Colors.lime[200],
+      Colors.lime[300],
+      Colors.lime[600],
+      Colors.green,
+      Colors.blue,
+      Colors.yellow,
+      Colors.cyan,
+      Colors.black,
+      Colors.brown,
+      Colors.purple,
+      Colors.purple[200],
+      Colors.purple[300],
+      Colors.indigo,
+      Colors.indigo[300],
+      Colors.indigo[400],
+      Colors.orange,
+      Colors.grey[850],
+      Colors.pink
+    ];
+    Random random = new Random();
+    int index = random.nextInt(colors.length);
 
+    return colors[index];
+  }
 }
 class VendaAno{
 
