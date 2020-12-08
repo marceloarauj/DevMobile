@@ -1,3 +1,4 @@
+import 'package:FurniCommerce/views/lista/lista.dart';
 import 'package:FurniCommerce/views/venda/novavenda_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
@@ -181,11 +182,12 @@ class _NovaVenda extends State<NovaVenda> {
     await Navigator.pop(mainContext);
     Future<List<NovaVendaDTO>> novaVenda =
         novaVendaServices.NovaVendaRequest(widget.uid, novaVendaServices.imageB64, movel,double.parse(moneyMask.text),observacao.text);
-    showDialog(
+    await showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (context, setState) {
-            return AlertDialog(
+            return AlertDialog(              
               content: Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 30,
@@ -193,13 +195,15 @@ class _NovaVenda extends State<NovaVenda> {
             if(!snapshot.hasData){
               return Container(height:500,child:Center(child: CircularProgressIndicator()));
             }else{
-              return Container(child:Text("Venda cadastrada !"));
+              Navigator.pop(context);
+              return Container();
             }
           })),
               ),
             );
           });
         });
+
   }
 
   List<DropdownMenuItem> _moveis() {

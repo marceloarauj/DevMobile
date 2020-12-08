@@ -33,7 +33,7 @@ class ListaView extends StatefulWidget {
 
 class ListaViewUser extends State<ListaView> {
   ItensLista itens = ItensLista();
-  Future<List<VendaDTO>> vendas = VendaServices().ObterVendas();
+  Future<List<VendaDTO>> vendas;
   List<VendaDTO> vendasCarregadas;
   List<VendaDTO> vendasFiltro = null;
 
@@ -63,33 +63,57 @@ class ListaViewUser extends State<ListaView> {
   void armarioCheck(bool value) => state(() => armario = value);
   void cadeiraCheck(bool value) => state(() => cadeira = value);
   void estanteCheck(bool value) => state(() => estante = value);
-  
-  List<VendaDTO> filtrar(){
+
+  List<VendaDTO> filtrar() {
     vendasFiltro = List<VendaDTO>();
     List<VendaDTO> removeList = List<VendaDTO>();
 
     for (var item in vendasCarregadas) {
-      if(cama && item.movel == 1){vendasFiltro.add(item);}
-      if(sofa && item.movel == 2){vendasFiltro.add(item);}
-      if(poltrona && item.movel == 3){vendasFiltro.add(item);}
-      if(armario && item.movel == 4){vendasFiltro.add(item);}
-      if(mesa && item.movel == 5){vendasFiltro.add(item);}
-      if(cadeira && item.movel == 6){vendasFiltro.add(item);}
-      if(estante && item.movel == 7){vendasFiltro.add(item);}
+      if (cama && item.movel == 1) {
+        vendasFiltro.add(item);
+      }
+      if (sofa && item.movel == 2) {
+        vendasFiltro.add(item);
+      }
+      if (poltrona && item.movel == 3) {
+        vendasFiltro.add(item);
+      }
+      if (armario && item.movel == 4) {
+        vendasFiltro.add(item);
+      }
+      if (mesa && item.movel == 5) {
+        vendasFiltro.add(item);
+      }
+      if (cadeira && item.movel == 6) {
+        vendasFiltro.add(item);
+      }
+      if (estante && item.movel == 7) {
+        vendasFiltro.add(item);
+      }
     }
 
     for (var item in vendasFiltro) {
-      if(item.status_venda == 1 && !disponivel){removeList.add(item);}
-      if(item.status_venda == 2 && !comprado){removeList.add(item);}
-      if(item.status_venda == 3 && !entregue){removeList.add(item);}
+      if (item.status_venda == 1 && !disponivel) {
+        removeList.add(item);
+      }
+      if (item.status_venda == 2 && !comprado) {
+        removeList.add(item);
+      }
+      if (item.status_venda == 3 && !entregue) {
+        removeList.add(item);
+      }
     }
     for (var item in removeList) {
       vendasFiltro.remove(item);
     }
     setState(() {});
   }
+
   @override
   Widget build(BuildContext context) {
+
+    vendas = VendaServices().ObterVendas();
+    
     return Scaffold(
       appBar: AppBar(
         title: Text("Bem vindo, ${widget.nome} !"),
@@ -119,13 +143,14 @@ class ListaViewUser extends State<ListaView> {
                   Icons.add,
                   color: Colors.white,
                 ),
-                onTap: () => {
+                onTap: () async=> {
                   Navigator.pop(context),
-                  Navigator.push(
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => Venda(uid: widget.uid)),
                   ),
+                  setState(()=>{print('sss')})
                 },
                 title: Text(
                   'Venda',
@@ -213,7 +238,7 @@ class ListaViewUser extends State<ListaView> {
                         child: Center(child: CircularProgressIndicator()));
                   } else {
                     vendasCarregadas = snapshot.data;
-                    if(vendasFiltro == null){
+                    if (vendasFiltro == null) {
                       vendasFiltro = vendasCarregadas;
                     }
                     return Column(
@@ -362,7 +387,29 @@ class ListaViewUser extends State<ListaView> {
                                           setState(() => {})
                                         }),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 20),
+                                  padding: EdgeInsets.only(left: 8),
+                                ),
+                                RaisedButton(
+                                    color: Colors.green[900],
+                                    child: Text(
+                                      'Padrão',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onPressed: () => {
+                                          disponivel = true,
+                                          comprado = true,
+                                          entregue = true,
+                                          cama = true,
+                                          sofa = true,
+                                          mesa = true,
+                                          poltrona = true,
+                                          armario = true,
+                                          cadeira = true,
+                                          estante = true,
+                                          setState(() => {})
+                                        }),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 8),
                                 ),
                                 RaisedButton(
                                     color: Colors.black,
@@ -370,7 +417,8 @@ class ListaViewUser extends State<ListaView> {
                                       'Filtrar',
                                       style: TextStyle(color: Colors.white),
                                     ),
-                                    onPressed: () => {filtrar(),Navigator.pop(context)})
+                                    onPressed: () =>
+                                        {filtrar(), Navigator.pop(context)})
                               ],
                             )
                           ],
