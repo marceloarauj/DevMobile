@@ -119,7 +119,11 @@ class ListaViewUser extends State<ListaView> {
         title: Text("Bem vindo, ${widget.nome} !"),
       ),
       drawer: Drawer(
-        child: ListView(
+        elevation: 3,
+        child: Container(
+          decoration: BoxDecoration(color: Colors.brown[100],border:Border(right: BorderSide(width: 2,color: Colors.black))),
+          
+          child:ListView(
           children: <Widget>[
             InkWell(
                 child: Container(
@@ -134,7 +138,7 @@ class ListaViewUser extends State<ListaView> {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              decoration: BoxDecoration(color: Colors.brown),
+              decoration: BoxDecoration(color: Colors.brown,border: Border(right: BorderSide(width:1,color: Colors.black),bottom: BorderSide(width: 1,color: Colors.black))),
             )),
             InkWell(
                 child: Container(
@@ -157,7 +161,7 @@ class ListaViewUser extends State<ListaView> {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              decoration: BoxDecoration(color: Colors.brown),
+              decoration: BoxDecoration(color: Colors.brown,border: Border(right: BorderSide(width:1,color: Colors.black),bottom: BorderSide(width: 1,color: Colors.black))),
             )),
             InkWell(
                 child: Container(
@@ -183,7 +187,7 @@ class ListaViewUser extends State<ListaView> {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              decoration: BoxDecoration(color: Colors.brown),
+              decoration: BoxDecoration(color: Colors.brown,border: Border(right: BorderSide(width:1,color: Colors.black),bottom: BorderSide(width: 1,color: Colors.black))),
             )),
             InkWell(
                 child: Container(
@@ -207,7 +211,7 @@ class ListaViewUser extends State<ListaView> {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              decoration: BoxDecoration(color: Colors.brown),
+              decoration: BoxDecoration(color: Colors.brown,border: Border(right: BorderSide(width:1,color: Colors.black),bottom: BorderSide(width: 1,color: Colors.black))),
             )),
             InkWell(
                 child: Container(
@@ -222,9 +226,10 @@ class ListaViewUser extends State<ListaView> {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              decoration: BoxDecoration(color: Colors.brown),
+              decoration: BoxDecoration(color: Colors.brown,border: Border(right: BorderSide(width:1,color: Colors.black),bottom: BorderSide(width: 1,color: Colors.black))),
             ))
           ],
+        )
         ),
       ),
       body: Container(

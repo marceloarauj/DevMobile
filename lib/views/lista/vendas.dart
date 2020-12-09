@@ -255,23 +255,28 @@ class _ElementoLista extends State<ElementoLista> {
                     return AlertDialog(
                       content: Container(
                         width: MediaQuery.of(context).size.width * 0.8,
-                        height: MediaQuery.of(context).size.width * 0.85,
-                        child: Center(
+                        height: MediaQuery.of(context).size.width,
+
                             child: Column(
                           children: [
-                            Text("Preço R\$: ${venda[0].valor}"),
+                            Text("Preço R\$: ${venda[0].valor}",style: TextStyle(fontSize: 20),),
+                            Padding(padding: EdgeInsets.only(top:10)),
                             Text("Vendedor: ${venda[0].usuario_vendedor}"),
+                            Padding(padding: EdgeInsets.only(top:10)),
                             Text("Movel: ${DeParaMovel(venda[0].movel)}"),
+                            Padding(padding: EdgeInsets.only(top:10)),
                             Text("Observação: ${venda[0].observacao}"),
+                            Padding(padding: EdgeInsets.only(top:10)),
                             Container(
                               width: 300,
                               height: 200,
                               child: fromBase64Image(venda[0].imagem),
                             ),
+                            Padding(padding: EdgeInsets.only(top:10)),
                             podeComprar(venda[0].status_venda, widget.id,
                                 widget.uid, context, modelContext)
                           ],
-                        )),
+                        ),
                       ),
                     );
                   });
