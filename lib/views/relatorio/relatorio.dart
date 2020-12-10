@@ -56,10 +56,14 @@ class _RelatorioView extends State<RelatorioView> {
     Map<String, int> vendas = new Map<String, int>();
 
     for (var venda in widget.vendas) {
-      if (vendas.containsKey(Ano(venda.data_venda))) {
+      if (vendas.containsKey(Ano(venda.data_venda)) && (venda.status_venda == 2 || venda.status_venda == 3)) {
         vendas[Ano(venda.data_venda)] = vendas[Ano(venda.data_venda)] + 1;
       } else {
-        vendas[Ano(venda.data_venda)] = 0;
+                if((venda.status_venda == 2 || venda.status_venda == 3)){
+          vendas[Ano(venda.data_venda)] = 1;
+        }else{
+          vendas[Ano(venda.data_venda)] = 0;
+        }
       }
     }
     List<VendaAno> vendasAno = [];
@@ -72,10 +76,14 @@ class _RelatorioView extends State<RelatorioView> {
     vendas = new Map<String, int>();
 
     for (var venda in widget.vendas) {
-      if (vendas.containsKey(Mes(venda.data_venda))) {
+      if (vendas.containsKey(Mes(venda.data_venda)) && (venda.status_venda == 2 || venda.status_venda == 3)) {
         vendas[Mes(venda.data_venda)] = vendas[Mes(venda.data_venda)] + 1;
       } else {
-        vendas[Mes(venda.data_venda)] = 0;
+        if((venda.status_venda == 2 || venda.status_venda == 3)){
+          vendas[Mes(venda.data_venda)] = 1;
+        }else{
+          vendas[Mes(venda.data_venda)] = 0;
+        }
       }
     }
     List<VendaAno> vendasMes = [];

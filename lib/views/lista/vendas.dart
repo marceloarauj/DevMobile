@@ -287,15 +287,15 @@ class _ElementoLista extends State<ElementoLista> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                   color: Color.fromRGBO(240, 240, 240, 0),
-                  border: Border.all(width: 0.2, color: Colors.grey),
+                  border: Border.all(width: 0.2, color: Colors.black),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey[350],
-                      blurRadius: 15.0, // soften the shadow
+                      blurRadius: 2.0, // soften the shadow
                       spreadRadius: 1.0, //extend the shadow
                       offset: Offset(
-                        15.0, // Move to right 10  horizontally
-                        15.0, // Move to bottom 10 Vertically
+                        0.0, // Move to right 10  horizontally
+                        0.0, // Move to bottom 10 Vertically
                       ),
                     )
                   ]),
