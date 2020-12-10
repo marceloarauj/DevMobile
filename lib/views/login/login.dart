@@ -156,6 +156,8 @@ class _LoginView extends State<LoginView> {
             );
           });
         });
+    widget.ehLogin = true;
+    setState(() {});
   }
 
   void loginDialog(BuildContext context) async {
